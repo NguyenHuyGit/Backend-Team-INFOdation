@@ -1,3 +1,3 @@
 # Backend-Team-INFOdation
 ## Nguyen Van Liem joined
-## NguyenQuocHuy joined
+## Nguyen Quoc Huy joined
