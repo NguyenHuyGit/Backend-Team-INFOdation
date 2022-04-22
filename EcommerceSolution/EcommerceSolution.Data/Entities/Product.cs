@@ -11,11 +11,11 @@ namespace EcommerceSolution.Data.Entities
         public int Quantity { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }
-        public Guid UserCreateId { get; set; }
+        public string UserCreate { get; set; }
         public DateTime CreateDate { get; set; }
-        public Guid UserUpdateId { get; set; }
+        public string UserUpdate { get; set; }
         public DateTime UpdateDate { get; set; }
-        public User User { get; set; }
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
     }
 }
