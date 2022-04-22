@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EcommerceSolution.Data.Migrations
+namespace EcommerceSolution.BackendAPI.Migrations
 {
     [DbContext(typeof(ESolutionDbContext))]
-    [Migration("20220422070712_Add-Db-WithIdentity-2")]
-    partial class AddDbWithIdentity2
+    [Migration("20220422103158_DbTest")]
+    partial class DbTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,7 +88,9 @@ namespace EcommerceSolution.Data.Migrations
                         .HasMaxLength(200);
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -96,13 +98,12 @@ namespace EcommerceSolution.Data.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(null);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserCreate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("04/22/2022 17:31:58");
 
                     b.Property<string>("UserUpdate")
                         .HasColumnType("nvarchar(max)");

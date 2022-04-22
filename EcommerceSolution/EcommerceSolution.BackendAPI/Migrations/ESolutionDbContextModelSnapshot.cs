@@ -4,16 +4,14 @@ using EcommerceSolution.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EcommerceSolution.Data.Migrations
+namespace EcommerceSolution.BackendAPI.Migrations
 {
     [DbContext(typeof(ESolutionDbContext))]
-    [Migration("20220422070339_Add-Db-WithIdentity")]
-    partial class AddDbWithIdentity
+    partial class ESolutionDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +86,9 @@ namespace EcommerceSolution.Data.Migrations
                         .HasMaxLength(200);
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -96,16 +96,12 @@ namespace EcommerceSolution.Data.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(null);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserCreate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("04/22/2022 17:31:58");
 
                     b.Property<string>("UserUpdate")
                         .HasColumnType("nvarchar(max)");
@@ -113,8 +109,6 @@ namespace EcommerceSolution.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -309,10 +303,6 @@ namespace EcommerceSolution.Data.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("EcommerceSolution.Data.Entities.User", "User")
-                        .WithMany("Products")
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

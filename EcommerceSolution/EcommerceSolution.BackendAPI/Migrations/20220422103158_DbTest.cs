@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EcommerceSolution.Data.Migrations
+namespace EcommerceSolution.BackendAPI.Migrations
 {
-    public partial class AddDbWithIdentity : Migration
+    public partial class DbTest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -158,15 +158,14 @@ namespace EcommerceSolution.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false, defaultValue: 0),
                     Description = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
-                    UserCreate = table.Column<string>(nullable: false),
+                    UserCreate = table.Column<string>(nullable: true, defaultValue: "04/22/2022 17:31:58"),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UserUpdate = table.Column<string>(nullable: true),
                     UpdateDate = table.Column<DateTime>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,12 +176,6 @@ namespace EcommerceSolution.Data.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -194,11 +187,6 @@ namespace EcommerceSolution.Data.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_UserId",
-                table: "Products",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -222,13 +210,13 @@ namespace EcommerceSolution.Data.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Brands");
