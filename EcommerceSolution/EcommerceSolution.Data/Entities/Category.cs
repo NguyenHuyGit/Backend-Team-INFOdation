@@ -8,6 +8,7 @@ namespace EcommerceSolution.Data.Entities
     {
         public int Id { get; set; } 
         public string Name { get; set; }
+        public int BrandId { get; set; }
         public List<Product> Products { get; set; }
         public Brand Brand { get; set; }
     }

@@ -5,9 +5,7 @@ using System.Text;
 
 namespace EcommerceSolution.Data.Entities
 {
-    public class User : IdentityUser<Guid>
+    public class Role : IdentityRole<Guid>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
     }
 }
