@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceSolution.BackendAPI.Migrations
 {
     [DbContext(typeof(ESolutionDbContext))]
-    [Migration("20220422103158_DbTest")]
-    partial class DbTest
+    [Migration("20220423091527_AddDbAndSeedData2")]
+    partial class AddDbAndSeedData2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,33 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "DELL"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "ASUS"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Panasonic"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Samsung"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Apple"
+                        });
                 });
 
             modelBuilder.Entity("EcommerceSolution.Data.Entities.Category", b =>
@@ -62,6 +89,38 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     b.HasIndex("BrandId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BrandId = 1,
+                            Name = "Laptop"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BrandId = 1,
+                            Name = "Máy tính bàn"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BrandId = 3,
+                            Name = "Tủ lạnh"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BrandId = 4,
+                            Name = "Điện thoại"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BrandId = 5,
+                            Name = "Điện thoại"
+                        });
                 });
 
             modelBuilder.Entity("EcommerceSolution.Data.Entities.Product", b =>
@@ -97,13 +156,11 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserCreate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("04/22/2022 17:31:58");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserUpdate")
                         .HasColumnType("nvarchar(max)");
@@ -113,6 +170,63 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreateDate = new DateTime(2022, 4, 23, 16, 15, 27, 147, DateTimeKind.Local).AddTicks(5969),
+                            Description = "Laptop văn phòng",
+                            Name = "Vostro 3578",
+                            Quantity = 3,
+                            Status = 0,
+                            UserCreate = "Liêm"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 4,
+                            CreateDate = new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4843),
+                            Description = "Điện thoại thời thượng",
+                            Name = "Galaxy A52s",
+                            Quantity = 5,
+                            Status = 0,
+                            UserCreate = "Liêm"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            CreateDate = new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4890),
+                            Description = "Tủ lạnh hiện đại",
+                            Name = "Tủ lạnh PN123",
+                            Quantity = 10,
+                            Status = 0,
+                            UserCreate = "Liêm"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 5,
+                            CreateDate = new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4893),
+                            Description = "Điện thoại cao cấp",
+                            Name = "Iphone 13 Pro Max",
+                            Quantity = 5,
+                            Status = 0,
+                            UserCreate = "Liêm"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            CreateDate = new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4895),
+                            Description = "Laptop gaming mạnh mẽ",
+                            Name = "TUF Gaming 22KW",
+                            Quantity = 2,
+                            Status = 0,
+                            UserCreate = "Liêm"
+                        });
                 });
 
             modelBuilder.Entity("EcommerceSolution.Data.Entities.Role", b =>
@@ -192,6 +306,26 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f80d850b-c734-4e95-b681-2864270070c9",
+                            Email = "backendteam@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Liem",
+                            LastName = "Nguyen",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "backendteam@gmail.com",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM8vzeMyrScAi+os2F/GZwayaU4XqNHzTHp+IRVnDEg/0volOANOVuOzb8bkdcfG1g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -303,7 +437,7 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     b.HasOne("EcommerceSolution.Data.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
