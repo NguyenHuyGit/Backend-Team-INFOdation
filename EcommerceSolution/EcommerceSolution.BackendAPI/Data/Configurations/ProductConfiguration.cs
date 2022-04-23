@@ -19,8 +19,8 @@ namespace EcommerceSolution.Data.Configurations
             builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Quantity).HasDefaultValue(0);
             builder.Property(x => x.Status).HasDefaultValue(0);
-            builder.Property(x=>x.UserCreate).HasDefaultValue(DateTime.Now);
-            builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);
+            builder.Property(x => x.UserUpdate).IsRequired(false);
+            builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.NoAction);
 
 
 

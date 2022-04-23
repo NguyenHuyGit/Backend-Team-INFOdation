@@ -1,4 +1,5 @@
-﻿using EcommerceSolution.Data.Configurations;
+﻿using EcommerceSolution.BackendAPI.Data.Extensions;
+using EcommerceSolution.Data.Configurations;
 using EcommerceSolution.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace EcommerceSolution.Data.EF
 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens").HasKey(x => x.UserId);
+            modelBuilder.Seed();
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }

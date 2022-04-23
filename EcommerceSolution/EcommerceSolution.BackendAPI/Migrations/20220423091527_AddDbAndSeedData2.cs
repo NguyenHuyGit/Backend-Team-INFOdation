@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EcommerceSolution.BackendAPI.Migrations
 {
-    public partial class DbTest : Migration
+    public partial class AddDbAndSeedData2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -161,10 +161,10 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     Quantity = table.Column<int>(nullable: false, defaultValue: 0),
                     Description = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
-                    UserCreate = table.Column<string>(nullable: true, defaultValue: "04/22/2022 17:31:58"),
+                    UserCreate = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UserUpdate = table.Column<string>(nullable: true),
-                    UpdateDate = table.Column<DateTime>(nullable: false),
+                    UpdateDate = table.Column<DateTime>(nullable: true),
                     CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -174,8 +174,48 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Brands",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "DELL" },
+                    { 2, "ASUS" },
+                    { 3, "Panasonic" },
+                    { 4, "Samsung" },
+                    { 5, "Apple" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "f80d850b-c734-4e95-b681-2864270070c9", "backendteam@gmail.com", true, "Liem", "Nguyen", false, null, "backendteam@gmail.com", "admin", "AQAAAAEAACcQAAAAEM8vzeMyrScAi+os2F/GZwayaU4XqNHzTHp+IRVnDEg/0volOANOVuOzb8bkdcfG1g==", null, false, "", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "BrandId", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "Laptop" },
+                    { 2, 1, "Máy tính bàn" },
+                    { 3, 3, "Tủ lạnh" },
+                    { 4, 4, "Điện thoại" },
+                    { 5, 5, "Điện thoại" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "CreateDate", "Description", "Name", "Quantity", "UpdateDate", "UserCreate", "UserUpdate" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2022, 4, 23, 16, 15, 27, 147, DateTimeKind.Local).AddTicks(5969), "Laptop văn phòng", "Vostro 3578", 3, null, "Liêm", null },
+                    { 5, 1, new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4895), "Laptop gaming mạnh mẽ", "TUF Gaming 22KW", 2, null, "Liêm", null },
+                    { 3, 3, new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4890), "Tủ lạnh hiện đại", "Tủ lạnh PN123", 10, null, "Liêm", null },
+                    { 2, 4, new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4843), "Điện thoại thời thượng", "Galaxy A52s", 5, null, "Liêm", null },
+                    { 4, 5, new DateTime(2022, 4, 23, 16, 15, 27, 148, DateTimeKind.Local).AddTicks(4893), "Điện thoại cao cấp", "Iphone 13 Pro Max", 5, null, "Liêm", null }
                 });
 
             migrationBuilder.CreateIndex(
