@@ -9,6 +9,6 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Product
         public int Quantity { get; set; }
         public int Status { get; set; }
         public string UserCreate { get; set; }
-        public int CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

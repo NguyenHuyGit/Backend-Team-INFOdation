@@ -43,6 +43,8 @@ namespace EcommerceSolution.BackendAPI.Services.Product
                     break;
             }
             //Paging
+            //Convert Datetime to Epoch timestamp:
+            //(int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
             int totalRow = await query.CountAsync();
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
@@ -53,7 +55,7 @@ namespace EcommerceSolution.BackendAPI.Services.Product
                     Quantity = x.p.Quantity,
                     Status = x.p.Status,
                     UserCreate = x.p.UserCreate,
-                    CreateDate = (int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
+                    CreateDate = x.p.CreateDate
                 }).ToListAsync();
             var pagedResult = new PagedResult<ProductVm>()
             {
