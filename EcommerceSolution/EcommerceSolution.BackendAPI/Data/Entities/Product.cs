@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace EcommerceSolution.Data.Entities
 {
@@ -16,9 +15,7 @@ namespace EcommerceSolution.Data.Entities
         public DateTime CreateDate { get; set; }
         public string UserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
-
         public int? CategoryId { get; set; }
-        [JsonIgnore]
         public Category Category { get; set; }
        
     }
