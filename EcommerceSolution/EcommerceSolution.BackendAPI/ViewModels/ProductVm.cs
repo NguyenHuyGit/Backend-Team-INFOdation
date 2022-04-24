@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EcommerceSolution.BackendAPI.ViewModels
+namespace EcommerceSolution.BackendAPI.ViewModels.Product
 {
-    public class ProductModel
+    public class ProductVm
     {
         public int Id { get; set; }
         public string Name { get; set; }

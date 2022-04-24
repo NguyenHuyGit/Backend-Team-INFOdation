@@ -5,14 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\**" />
+    <Compile Remove="ViewModels\Category\**" />
     <Compile Remove="ViewModels\Product\**" />
-    <Content Remove="Services\**" />
+    <Compile Remove="ViewModels\User\**" />
+    <Content Remove="ViewModels\Category\**" />
     <Content Remove="ViewModels\Product\**" />
-    <EmbeddedResource Remove="Services\**" />
+    <Content Remove="ViewModels\User\**" />
+    <EmbeddedResource Remove="ViewModels\Category\**" />
     <EmbeddedResource Remove="ViewModels\Product\**" />
-    <None Remove="Services\**" />
+    <EmbeddedResource Remove="ViewModels\User\**" />
+    <None Remove="ViewModels\Category\**" />
     <None Remove="ViewModels\Product\**" />
+    <None Remove="ViewModels\User\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,12 +34,6 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.24" />
 	  <PackageReference Include="Microsoft.OpenApi" Version="1.3.1" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="ViewModels\Category\" />
-    <Folder Include="ViewModels\User\" />
   </ItemGroup>
 
 

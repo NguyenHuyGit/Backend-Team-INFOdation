@@ -1,4 +1,5 @@
-﻿using EcommerceSolution.BackendAPI.ViewModels;
+﻿using EcommerceSolution.BackendAPI.Services.Product;
+using EcommerceSolution.BackendAPI.ViewModels.Product;
 using EcommerceSolution.Data.EF;
 using EcommerceSolution.Data.Entities;
 using Microsoft.AspNetCore.Http;
@@ -15,39 +16,25 @@ namespace EcommerceSolution.BackendAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ESolutionDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductController(ESolutionDbContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Product>> GetAll()
+        public async Task<IActionResult> GetProductList([FromQuery] GetProductListRequest request)
         {
-            List<Product> prod = await _context.Products.ToListAsync();
-            if (prod != null)
-            {
-                return Ok(prod);
-            }
-            else
-            {
-                return BadRequest();
-            }
+            var result = await _productService.GetProductList(request);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<IActionResult> GetGetProductById([FromQuery]int id)
         {
-            Product prod = await _context.Products.SingleOrDefaultAsync(prod => prod.Id == id);
-            if (prod != null)
-            {
-                return Ok(prod);
-            }
-            else
-            {
-                return BadRequest();
-            }
+            var result = await _productService.GetProductById(id);
+            return Ok();
         }
     }
 }
