@@ -74,7 +74,6 @@ namespace EcommerceSolution.BackendAPI.Services.Product
             //Select products
             var query = from p in _context.Products where p.Id == id
                         select new { p };
-
             //Paging
             int totalRow = await query.CountAsync();
             var data = await query
