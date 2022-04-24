@@ -41,6 +41,12 @@ namespace EcommerceSolution.BackendAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1");
+                });
             }
 
             app.UseHttpsRedirection();
@@ -48,12 +54,7 @@ namespace EcommerceSolution.BackendAPI
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1");
-            });
+            
 
             app.UseEndpoints(endpoints =>
             {
