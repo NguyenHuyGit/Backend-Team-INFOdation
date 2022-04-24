@@ -51,9 +51,13 @@ namespace EcommerceSolution.BackendAPI.Services.Product
                     Id = x.p.Id,
                     Name = x.p.Name,
                     Quantity = x.p.Quantity,
+                    Description = x.p.Description,
                     Status = x.p.Status,
                     UserCreate = x.p.UserCreate,
-                    CreateDate = x.p.CreateDate
+                    CreateDate = x.p.CreateDate,
+                    UserUpdate = x.p.UserUpdate,
+                    UpdateDate = x.p.UpdateDate,
+                    CategoryId = x.p.CategoryId,
                 }).ToListAsync();
             var pagedResult = new PagedResult<ProductVm>()
             {
