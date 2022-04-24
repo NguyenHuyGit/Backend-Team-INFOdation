@@ -31,10 +31,10 @@ namespace EcommerceSolution.BackendAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGetProductById([FromQuery]int id)
+        public async Task<IActionResult> GetGetProductById([FromQuery]int id, GetProductListRequest request)
         {
-            var result = await _productService.GetProductById(id);
-            return Ok();
+            var result = await _productService.GetProductById(id, request);
+            return Ok(result);
         }
     }
 }
