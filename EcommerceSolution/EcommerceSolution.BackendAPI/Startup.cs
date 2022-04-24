@@ -22,7 +22,7 @@ namespace EcommerceSolution.BackendAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ESolutionDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb"))); ;
+                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb")));
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -37,6 +37,8 @@ namespace EcommerceSolution.BackendAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
             }
 
             app.UseHttpsRedirection();
@@ -44,12 +46,6 @@ namespace EcommerceSolution.BackendAPI
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1");
-            });
 
             app.UseEndpoints(endpoints =>
             {

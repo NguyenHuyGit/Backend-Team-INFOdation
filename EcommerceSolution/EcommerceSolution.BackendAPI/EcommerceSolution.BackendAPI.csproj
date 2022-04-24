@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Compile Remove="ViewModels\Product\**" />
+    <Content Remove="Services\**" />
+    <Content Remove="ViewModels\Product\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="ViewModels\Product\**" />
+    <None Remove="Services\**" />
+    <None Remove="ViewModels\Product\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.24" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.24">
 		  <PrivateAssets>all</PrivateAssets>
@@ -23,11 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Services\Category\" />
-    <Folder Include="Services\User\" />
-    <Folder Include="Services\Product\" />
     <Folder Include="ViewModels\Category\" />
-    <Folder Include="ViewModels\Product\" />
     <Folder Include="ViewModels\User\" />
   </ItemGroup>
 

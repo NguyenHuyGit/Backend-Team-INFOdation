@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EcommerceSolution.Data.Entities
+namespace EcommerceSolution.BackendAPI.ViewModels
 {
-    public class Product
+    public class ProductModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,11 +15,7 @@ namespace EcommerceSolution.Data.Entities
         public string UserCreate { get; set; }
         public DateTime CreateDate { get; set; }
         public string UserUpdate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-
-        public int? CategoryId { get; set; }
-        [JsonIgnore]
-        public Category Category { get; set; }
-       
+        public DateTime UpdateDate { get; set; }
+        public int CategoryId { get; set; }
     }
 }
