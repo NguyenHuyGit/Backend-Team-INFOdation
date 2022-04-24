@@ -7,6 +7,6 @@ namespace EcommerceSolution.BackendAPI.Services.Product
     public interface IProductService
     {
         Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request);
-        Task<PagedResult<ProductVm>> GetProductById(int id, GetProductListRequest request);
+        Task<PagedResult<ProductVm>> GetProductById(int id);
     }
 }

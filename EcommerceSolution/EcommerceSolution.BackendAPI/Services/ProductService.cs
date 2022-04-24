@@ -69,35 +69,15 @@ namespace EcommerceSolution.BackendAPI.Services.Product
             return pagedResult;
         }
 
-        public async Task<PagedResult<ProductVm>> GetProductById(int id, GetProductListRequest request)
+        public async Task<PagedResult<ProductVm>> GetProductById(int id)
         {
             //Select products
             var query = from p in _context.Products where p.Id == id
                         select new { p };
-            //Search by name
-            if (!string.IsNullOrEmpty(request.Keyword))
-                query = query.Where(x => x.p.Name.Contains(request.Keyword));
-            //Sort by name or create date
 
-            switch (request.SortOrder)
-            {
-                case "name_asc":
-                    query = query.OrderBy(s => s.p.Name);
-                    break;
-                case "name_desc":
-                    query = query.OrderByDescending(s => s.p.Name);
-                    break;
-                case "date_asc":
-                    query = query.OrderBy(s => s.p.CreateDate);
-                    break;
-                default:
-                    query = query.OrderByDescending(s => s.p.CreateDate);
-                    break;
-            }
             //Paging
             int totalRow = await query.CountAsync();
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize)
+            var data = await query
                 .Select(x => new ProductVm()
                 {
                     Id = x.p.Id,
@@ -111,8 +91,6 @@ namespace EcommerceSolution.BackendAPI.Services.Product
             {
                 TotalRecords = totalRow,
                 Items = data,
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize,
             };
             return pagedResult;
         }
