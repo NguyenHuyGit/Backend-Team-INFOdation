@@ -21,6 +21,7 @@ namespace EcommerceSolution.BackendAPI.Services.Product
         {
             //Select products
             var query = from p in _context.Products
+                        where p.Status == 0
                         select new { p };
             //Search by name
             if (!string.IsNullOrEmpty(request.Keyword))
