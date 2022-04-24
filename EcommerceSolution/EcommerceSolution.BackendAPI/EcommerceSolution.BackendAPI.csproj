@@ -22,12 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="Services\Category\" />
     <Folder Include="Services\User\" />
-    <Folder Include="Services\Product\" />
     <Folder Include="ViewModels\Category\" />
-    <Folder Include="ViewModels\Product\" />
     <Folder Include="ViewModels\User\" />
   </ItemGroup>
 
