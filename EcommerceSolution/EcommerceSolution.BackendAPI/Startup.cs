@@ -23,8 +23,7 @@ namespace EcommerceSolution.BackendAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ESolutionDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb"))); ;
-
+                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb")));
             services.AddTransient<IProductService, ProductService>();
 
             services.AddControllers();
@@ -42,20 +41,12 @@ namespace EcommerceSolution.BackendAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1");
-                });
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-            
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
