@@ -7,6 +7,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
     public interface IProductService
     {
         Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request);
+        Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate);
         Task<ApiResult<ProductUpdateVm>> UpdateProductById (ProductUpdate productUpdate , string UserUpdate);
 
     }

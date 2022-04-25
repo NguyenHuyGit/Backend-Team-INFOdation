@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
+using EcommerceSolution.BackendAPI.Data.Entities;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -16,7 +17,61 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         {
             _context = context;
         }
+        public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
+        {
+            var query = from p in _context.Products
+                        where p.Status == 0
+                        select new { p };
 
+            var product = new Product()
+            {
+                Name = request.Name,
+                Quantity = request.Quantity,
+                Description = request.Description,
+                UserCreate = userCreate,
+                CreateDate = DateTime.Now,
+                CategoryId = request.CategoryId
+            };
+
+            if (request.Name == null)
+                return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
+            else
+            {
+                var checkName = _context.Products.FirstOrDefault(x => x.Name == request.Name);
+                if (checkName != null)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập trùng thông tin sản phẩm.");
+
+                if (request.Quantity < 0)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
+                if (request.CategoryId == 0)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
+            }
+
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            var productVm = new ProductVm()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Quantity = product.Quantity,
+                Description = product.Description,
+                UserCreate = product.UserCreate,
+                CreateDate = product.CreateDate,
+                CategoryId = product.CategoryId
+            };
+            return new ApiSuccessResult<ProductVm>(new ProductVm()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Quantity = product.Quantity,
+                Description = product.Description,
+                UserCreate = product.UserCreate,
+                CreateDate = product.CreateDate,
+                CategoryId = product.CategoryId
+            });
+
+        }
         public async Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request)
         {
             //Select products
@@ -56,7 +111,11 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     Quantity = x.p.Quantity,
                     Status = x.p.Status,
                     UserCreate = x.p.UserCreate,
-                    CreateDate = x.p.CreateDate
+                    CreateDate = x.p.CreateDate,
+                    Description = x.p.Description,
+                    CategoryId = x.p.CategoryId,
+                    UserUpdate = x.p.UserUpdate,
+                    UpdateDate = x.p.UpdateDate
                 }).ToListAsync();
             var pagedResult = new PagedResult<ProductVm>()
             {
