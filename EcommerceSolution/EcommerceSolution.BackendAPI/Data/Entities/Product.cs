@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceSolution.Data.Entities
+namespace EcommerceSolution.BackendAPI.Data.Entities
 {
     public class Product
     {

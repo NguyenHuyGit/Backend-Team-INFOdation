@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.24" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.24" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.24">
 		  <PrivateAssets>all</PrivateAssets>
@@ -22,10 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Category\" />
-    <Folder Include="Services\User\" />
-    <Folder Include="ViewModels\Category\" />
-    <Folder Include="ViewModels\User\" />
+    <Folder Include="Services\Categories\" />
+    <Folder Include="ViewModels\Categories\" />
   </ItemGroup>
 
 

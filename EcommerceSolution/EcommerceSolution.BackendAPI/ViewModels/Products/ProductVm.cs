@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EcommerceSolution.BackendAPI.ViewModels.Product
+namespace EcommerceSolution.BackendAPI.ViewModels.Products
 {
     public class ProductVm
     {

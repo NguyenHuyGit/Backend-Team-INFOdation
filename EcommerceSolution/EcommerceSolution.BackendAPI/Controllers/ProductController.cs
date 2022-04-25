@@ -1,5 +1,5 @@
-﻿using EcommerceSolution.BackendAPI.Services.Product;
-using EcommerceSolution.BackendAPI.ViewModels.Product;
+﻿using EcommerceSolution.BackendAPI.Services.Products;
+using EcommerceSolution.BackendAPI.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

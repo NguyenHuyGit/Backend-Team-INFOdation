@@ -1,6 +1,6 @@
-﻿using EcommerceSolution.BackendAPI.Data.Extensions;
-using EcommerceSolution.Data.Configurations;
-using EcommerceSolution.Data.Entities;
+﻿using EcommerceSolution.BackendAPI.Data.Configurations;
+using EcommerceSolution.BackendAPI.Data.Entities;
+using EcommerceSolution.BackendAPI.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceSolution.Data.EF
+namespace EcommerceSolution.BackendAPI.Data.EF
 {
     public class ESolutionDbContext : IdentityDbContext<User, Role, Guid>
     {
