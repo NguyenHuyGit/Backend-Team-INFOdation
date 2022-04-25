@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
+using NPOI.SS.Formula.Functions;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -67,5 +68,47 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             };
             return pagedResult;
         }
+
+        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request , string UserUpdate)
+        {
+            //find product by ID
+            var Product = _context.Products.SingleOrDefault(c=>c.Id==request.Id);
+            //check exist
+            var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
+            //check validate
+            if(request.Name==null || request.Name=="" )
+            {
+                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
+            }
+            if (request.Quantity <=0)
+            {
+                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập đúng số lượng");
+            }
+            if (NameProduct != null)
+            {
+                return new ApiErrorResult<ProductUpdateVm>("cập nhật thất bại , tên đã tồn tại");
+            }
+            else
+            {
+                Product.Name = request.Name;
+                Product.Quantity = request.Quantity;
+                Product.Description = request.Description;
+                Product.UserUpdate = UserUpdate;
+                Product.UpdateDate = DateTime.Now;
+                Product.CategoryId = request.CategoryId;
+            }
+             await _context.SaveChangesAsync();
+            return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
+            { Id=request.Id,
+              Name=request.Name,
+              Quantity=request.Quantity,
+              Description=request.Description,
+              UserUpdate=UserUpdate,
+              UpdateDate=DateTime.Now,
+              CategoryId = request.CategoryId,
+            });
+
+        }
+
     }
 }
