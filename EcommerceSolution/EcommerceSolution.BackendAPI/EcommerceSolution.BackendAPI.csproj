@@ -38,8 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <Folder Include="Services\Categories\" />
     <Folder Include="ViewModels\Categories\" />
+
   </ItemGroup>
 
 </Project>
