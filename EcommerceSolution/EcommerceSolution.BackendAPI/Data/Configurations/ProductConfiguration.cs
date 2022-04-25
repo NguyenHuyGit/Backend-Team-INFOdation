@@ -1,11 +1,11 @@
-﻿using EcommerceSolution.Data.Entities;
+﻿using EcommerceSolution.BackendAPI.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceSolution.Data.Configurations
+namespace EcommerceSolution.BackendAPI.Data.Configurations
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
@@ -21,11 +21,6 @@ namespace EcommerceSolution.Data.Configurations
             builder.Property(x => x.Status).HasDefaultValue(0);
             builder.Property(x => x.UserUpdate).IsRequired(false);
             builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.NoAction);
-
-
-
-
-
         }
     }
 }

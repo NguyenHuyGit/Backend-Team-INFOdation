@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace EcommerceSolution.Data.EF
+namespace EcommerceSolution.BackendAPI.Data.EF
 {
     public class ESolutionDbContextFactory : IDesignTimeDbContextFactory<ESolutionDbContext>
     {
@@ -14,7 +14,7 @@ namespace EcommerceSolution.Data.EF
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json")
                 .Build();
 
             var connectionString = configuration.GetConnectionString("EcommerceSolutionDb");
