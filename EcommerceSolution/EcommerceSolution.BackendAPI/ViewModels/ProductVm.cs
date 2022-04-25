@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EcommerceSolution.BackendAPI.Data.Entities
+namespace EcommerceSolution.BackendAPI.ViewModels.Product
 {
-    public class Product
+    public class ProductVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,7 +17,5 @@ namespace EcommerceSolution.BackendAPI.Data.Entities
         public string UserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public int? CategoryId { get; set; }
-        public Category Category { get; set; }
-       
     }
 }
