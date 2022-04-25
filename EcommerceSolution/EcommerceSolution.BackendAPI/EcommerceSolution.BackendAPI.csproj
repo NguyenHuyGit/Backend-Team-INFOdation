@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Migrations\20220425042916_EcommerceDb.cs" />
+    <Compile Include="Migrations\20220425042916_EcommerceDb.Designer.cs" />
+    <Compile Include="Migrations\ESolutionDbContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.24" />
 
@@ -25,7 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+
+    <Folder Include="Services\Categories\" />
+    <Folder Include="ViewModels\Categories\" />
+
   </ItemGroup>
 
 </Project>
