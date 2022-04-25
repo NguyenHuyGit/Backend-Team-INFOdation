@@ -17,6 +17,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         {
             _context = context;
         }
+
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
             var query = from p in _context.Products
@@ -72,6 +73,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             });
 
         }
+
         public async Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request)
         {
             //Select products
@@ -127,6 +129,23 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             return pagedResult;
         }
 
+
+        public async Task<ApiResult<bool>> TempDeleteProduct(int productId)
+        {
+            var p = _context.Products.Single(s => s.Id == productId);
+            p.Status = 1;
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<bool>> PermDeleteProduct(int productId)
+        {
+            var p = _context.Products.Single(s => s.Id == productId);
+            _context.Products.Remove(p);
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<bool>();
+        }
+
         public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request , string UserUpdate)
         {
             //find product by ID
@@ -167,6 +186,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             });
 
         }
+
 
     }
 }
