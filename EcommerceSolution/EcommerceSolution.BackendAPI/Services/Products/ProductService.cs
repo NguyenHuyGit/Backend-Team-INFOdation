@@ -1,12 +1,12 @@
 ﻿using EcommerceSolution.BackendAPI.Common;
-using EcommerceSolution.BackendAPI.ViewModels.Product;
-using EcommerceSolution.Data.EF;
+using EcommerceSolution.BackendAPI.ViewModels.Products;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using EcommerceSolution.BackendAPI.Data.EF;
 
-namespace EcommerceSolution.BackendAPI.Services.Product
+namespace EcommerceSolution.BackendAPI.Services.Products
 {
     public class ProductService : IProductService
     {

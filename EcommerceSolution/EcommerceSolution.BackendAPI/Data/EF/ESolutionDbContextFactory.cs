@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace EcommerceSolution.Data.EF
+namespace EcommerceSolution.BackendAPI.Data.EF
 {
     public class ESolutionDbContextFactory : IDesignTimeDbContextFactory<ESolutionDbContext>
     {

@@ -1,6 +1,6 @@
 ﻿using EcommerceSolution.BackendAPI.Common;
 
-namespace EcommerceSolution.BackendAPI.ViewModels.Product
+namespace EcommerceSolution.BackendAPI.ViewModels.Products
 {
     public class GetProductListRequest : PagingRequestBase
     {

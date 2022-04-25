@@ -1,11 +1,11 @@
-﻿using EcommerceSolution.Data.Entities;
+﻿using EcommerceSolution.BackendAPI.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EcommerceSolution.Data.Configurations
+namespace EcommerceSolution.BackendAPI.Data.Configurations
 {
     public class BrandConfiguration : IEntityTypeConfiguration<Brand>
     {
