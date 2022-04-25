@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Migrations\20220425124810_FinalDb.cs" />
+    <Compile Include="Migrations\20220425124810_FinalDb.Designer.cs" />
+    <Compile Include="Migrations\ESolutionDbContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.24" />
 

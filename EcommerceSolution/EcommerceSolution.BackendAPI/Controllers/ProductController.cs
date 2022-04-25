@@ -64,6 +64,10 @@ namespace EcommerceSolution.BackendAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> ProductUpdate([FromForm]string UserUpdate, ProductUpdate request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var n = User.FindFirstValue(ClaimTypes.GivenName);
             var result = await _productService.UpdateProductById(request, n);
             if (result.IsSuccessed)

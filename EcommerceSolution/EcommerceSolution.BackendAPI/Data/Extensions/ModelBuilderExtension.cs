@@ -12,16 +12,22 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
             modelBuilder.Entity<Brand>().HasData(
                 new Brand() { Id = 1, Name = "DELL" },
                 new Brand() { Id = 2, Name = "ASUS" },
-                new Brand() { Id = 3, Name = "Panasonic" },
-                new Brand() { Id = 4, Name = "Samsung" },
-                new Brand() { Id = 5, Name = "Apple" }
+                new Brand() { Id = 3, Name = "ACER" },
+                new Brand() { Id = 4, Name = "HP" },
+                new Brand() { Id = 5, Name = "SAMSUNG" },
+                new Brand() { Id = 6, Name = "APPLE" }
                 );
             modelBuilder.Entity<Category>().HasData(
-                new Category() { Id = 1, Name = "Laptop", BrandId = 1 },
-                new Category() { Id = 2, Name = "Máy tính bàn", BrandId = 1 },
-                new Category() { Id = 3, Name = "Tủ lạnh", BrandId = 3 },
-                new Category() { Id = 4, Name = "Điện thoại", BrandId = 4 },
-                new Category() { Id = 5, Name = "Điện thoại", BrandId = 5 }
+                new Category() { Id = 1, Name = "Phụ kiện Laptop", BrandId = 1 },//Dell
+                new Category() { Id = 2, Name = "Phụ kiện Ipad", BrandId = 6 },//Apple
+                new Category() { Id = 3, Name = "Ipad", BrandId = 6 },//Apple
+                new Category() { Id = 4, Name = "Máy tính", BrandId = 1 },//Dell
+                new Category() { Id = 5, Name = "Điện thoại", BrandId = 5 },//Samsung
+                new Category() { Id = 7, Name = "Iphone", BrandId = 6 },//Apple
+                new Category() { Id = 8, Name = "Laptop gaming", BrandId = 3 },//Acer
+                new Category() { Id = 9, Name = "Laptop gaming", BrandId = 2 },//Asus
+                new Category() { Id = 10, Name = "Máy tính", BrandId = 4 },//HP
+                new Category() { Id = 11, Name = "Máy in", BrandId = 1 }//Dell
                 );
             modelBuilder.Entity<Product>().HasData(
                 new Product() { 
@@ -33,7 +39,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     UserCreate = "Liêm",
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
-                    CategoryId = 1,
+                    CategoryId = 4,
                 },
                 new Product()
                 {
@@ -45,19 +51,19 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     UserCreate = "Liêm",
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
-                    CategoryId = 4,
+                    CategoryId = 5,
                 },
                 new Product()
                 {
                     Id = 3,
-                    Name = "Tủ lạnh PN123",
+                    Name = "Củ sạc laptop M01",
                     Quantity = 10,
-                    Description = "Tủ lạnh hiện đại",
+                    Description = "Sạc 100W",
                     Status = 0,
                     UserCreate = "Liêm",
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
-                    CategoryId = 3,
+                    CategoryId = 1,
                 },
                 new Product()
                 {
@@ -69,7 +75,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     UserCreate = "Liêm",
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
-                    CategoryId = 5,
+                    CategoryId = 7,
                 },
                 new Product()
                 {
@@ -81,24 +87,53 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     UserCreate = "Liêm",
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
-                    CategoryId = 1,
+                    CategoryId = 9,
+                },
+                new Product()
+                {
+                    Id = 6,
+                    Name = "Vostro 7799",
+                    Quantity = 2,
+                    Description = "Laptop văn phòng mạnh mẽ",
+                    Status = 0,
+                    UserCreate = "Liêm",
+                    CreateDate = System.DateTime.Now,
+                    UpdateDate = null,
+                    CategoryId = 4,
                 }
                 );
+
             var adminId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
+            var userId = new Guid("CDF5C8FB-B7C0-455C-8134-94EF0CF92717");
             var hasher = new PasswordHasher<User>();
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = adminId,
-                UserName = "admin",
-                NormalizedUserName = "admin",
-                Email = "backendteam@gmail.com",
-                NormalizedEmail = "backendteam@gmail.com",
-                EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Admin@123"),
-                SecurityStamp = string.Empty,
-                FirstName = "Liem",
-                LastName = "Nguyen",
-            });
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = adminId,
+                    UserName = "admin",
+                    NormalizedUserName = "admin",
+                    Email = "backendteam@gmail.com",
+                    NormalizedEmail = "backendteam@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Admin@123"),
+                    SecurityStamp = string.Empty,
+                    FirstName = "Hung",
+                    LastName = "Nguyen",
+                },
+                new User
+                {
+                    Id = userId,
+                    UserName = "liemnv",
+                    NormalizedUserName = "liemnv",
+                    Email = "backend@gmail.com",
+                    NormalizedEmail = "backend@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Admin@123"),
+                    SecurityStamp = string.Empty,
+                    FirstName = "Liem",
+                    LastName = "Nguyen",
+                }
+           );
         }
     }
 }
