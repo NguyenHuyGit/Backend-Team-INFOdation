@@ -1,3 +1,4 @@
+using EcommerceSolution.BackendAPI.Services.Product;
 using EcommerceSolution.Data.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,8 @@ namespace EcommerceSolution.BackendAPI
         {
             services.AddDbContext<ESolutionDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb")));
+            services.AddTransient<IProductService, ProductService>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -42,11 +45,8 @@ namespace EcommerceSolution.BackendAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

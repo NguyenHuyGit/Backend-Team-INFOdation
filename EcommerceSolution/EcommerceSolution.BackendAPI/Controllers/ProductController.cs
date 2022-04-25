@@ -29,7 +29,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
             var result = await _productService.GetProductList(request);
             return Ok(result);
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGetProductById([FromQuery]int id)
         {

@@ -36,5 +36,11 @@
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Category\" />
+    <Folder Include="Services\User\" />
+    <Folder Include="ViewModels\Category\" />
+    <Folder Include="ViewModels\User\" />
+  </ItemGroup>
 
 </Project>
