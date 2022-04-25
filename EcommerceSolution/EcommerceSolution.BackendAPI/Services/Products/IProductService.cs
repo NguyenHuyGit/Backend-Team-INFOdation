@@ -7,7 +7,13 @@ namespace EcommerceSolution.BackendAPI.Services.Products
     public interface IProductService
     {
         Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request);
+
         Task<ApiResult<bool>> TempDeleteProduct(int productId);
         Task<ApiResult<bool>> PermDeleteProduct(int productId);
+
+        Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate);
+        Task<ApiResult<ProductUpdateVm>> UpdateProductById (ProductUpdate productUpdate , string UserUpdate);
+
+
     }
 }
