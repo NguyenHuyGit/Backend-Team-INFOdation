@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Services\Categories\" />
     <Folder Include="ViewModels\Categories\" />
+
   </ItemGroup>
 
 </Project>

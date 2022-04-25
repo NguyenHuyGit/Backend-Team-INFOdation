@@ -5,7 +5,6 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
-using NPOI.SS.Formula.Functions;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
