@@ -31,14 +31,14 @@ namespace EcommerceSolution.BackendAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPut("/delete/{productId}")]
+        [HttpPut("delete/{productId}")]
         public async Task<IActionResult> TempDeleteProduct(int productId)
         {
             var result = await _productService.TempDeleteProduct(productId);
             return Ok(result);
         }
 
-        [HttpDelete("/delete/{productId}")]
+        [HttpDelete("{productId}")]
         public async Task<IActionResult> PermDeleteProduct(int productId)
         {
             var result = await _productService.PermDeleteProduct(productId);
