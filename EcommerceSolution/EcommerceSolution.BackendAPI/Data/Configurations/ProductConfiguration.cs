@@ -20,7 +20,10 @@ namespace EcommerceSolution.BackendAPI.Data.Configurations
             builder.Property(x => x.Quantity).HasDefaultValue(0);
             builder.Property(x => x.Status).HasDefaultValue(0);
             builder.Property(x => x.UserUpdate).IsRequired(false);
-            builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Category).WithMany(x => x.Products)
+                .HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Brand).WithMany(x => x.Products)
+                .HasForeignKey(x => x.BrandId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

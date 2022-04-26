@@ -18,16 +18,16 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                 new Brand() { Id = 6, Name = "APPLE" }
                 );
             modelBuilder.Entity<Category>().HasData(
-                new Category() { Id = 1, Name = "Phụ kiện Laptop", BrandId = 1 },//Dell
-                new Category() { Id = 2, Name = "Phụ kiện Ipad", BrandId = 6 },//Apple
-                new Category() { Id = 3, Name = "Ipad", BrandId = 6 },//Apple
-                new Category() { Id = 4, Name = "Máy tính", BrandId = 1 },//Dell
-                new Category() { Id = 5, Name = "Điện thoại", BrandId = 5 },//Samsung
-                new Category() { Id = 7, Name = "Iphone", BrandId = 6 },//Apple
-                new Category() { Id = 8, Name = "Laptop gaming", BrandId = 3 },//Acer
-                new Category() { Id = 9, Name = "Laptop gaming", BrandId = 2 },//Asus
-                new Category() { Id = 10, Name = "Máy tính", BrandId = 4 },//HP
-                new Category() { Id = 11, Name = "Máy in", BrandId = 1 }//Dell
+                new Category() { Id = 1, Name = "Phụ kiện Laptop", BrandId = 1 },//Dell-1
+                new Category() { Id = 2, Name = "Phụ kiện Ipad", BrandId = 6 },//Apple-6
+                new Category() { Id = 3, Name = "Ipad", BrandId = 6 },//Apple-6
+                new Category() { Id = 4, Name = "Máy tính", BrandId = 1 },//Dell-1
+                new Category() { Id = 5, Name = "Điện thoại", BrandId = 5 },//Samsung-5
+                new Category() { Id = 7, Name = "Iphone", BrandId = 6 },//Apple-6
+                new Category() { Id = 8, Name = "Laptop gaming", BrandId = 3 },//Acer-3
+                new Category() { Id = 9, Name = "Laptop gaming", BrandId = 2 },//Asus-2
+                new Category() { Id = 10, Name = "Máy tính", BrandId = 4 },//HP-4
+                new Category() { Id = 11, Name = "Máy in", BrandId = 1 }//Dell-1
                 );
             modelBuilder.Entity<Product>().HasData(
                 new Product() { 
@@ -40,6 +40,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 4,
+                    BrandId = 1,
                 },
                 new Product()
                 {
@@ -52,6 +53,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 5,
+                    BrandId = 5,
                 },
                 new Product()
                 {
@@ -64,6 +66,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 1,
+                    BrandId = 1
                 },
                 new Product()
                 {
@@ -76,6 +79,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 7,
+                    BrandId = 6
                 },
                 new Product()
                 {
@@ -88,6 +92,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 9,
+                    BrandId = 2
                 },
                 new Product()
                 {
@@ -100,6 +105,7 @@ namespace EcommerceSolution.BackendAPI.Data.Extensions
                     CreateDate = System.DateTime.Now,
                     UpdateDate = null,
                     CategoryId = 4,
+                    BrandId = 1
                 }
                 );
 
