@@ -108,7 +108,10 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //Paging
             //Convert Datetime to Epoch timestamp:
             //(int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
+            
             int totalRow = await query.CountAsync();
+            if(request.PageSize == 0)
+                request.PageSize = totalRow;
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
