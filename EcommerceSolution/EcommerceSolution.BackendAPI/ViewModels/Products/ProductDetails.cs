@@ -1,4 +1,6 @@
-﻿namespace EcommerceSolution.BackendAPI.ViewModels.Products
+﻿using System;
+
+namespace EcommerceSolution.BackendAPI.ViewModels.Products
 {
     public class ProductDetails
     {
@@ -7,7 +9,9 @@
         public string Description { get; set; }
         public string brandName { get; set; }
         public string categoryName { get; set; }
+        public string UserCreate { get; set; }
+        public DateTime CreateDate { get; set; }
         public string userUpdate { get; set; }
-        public string updateDate { get; set; }
+        public DateTime? updateDate { get; set; }
     }
 }
