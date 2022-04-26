@@ -197,11 +197,20 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             var detailProduct = new ProductDetails();
             detailProduct.Name = p.Name;
             detailProduct.Quantity = p.Quantity;
-            detailProduct.Description = p.Description;
+            if (p.Description == null)
+                detailProduct.Description = "Không có thông tin";
+            else
+                detailProduct.Description = p.Description;
             detailProduct.brandName = b.Name;
             detailProduct.categoryName = c.Name;
-            detailProduct.userUpdate = p.UserUpdate;
-            detailProduct.updateDate = p.UpdateDate;
+            if (p.UserUpdate == null)
+                detailProduct.userUpdate = "Không có thông tin";
+            else
+                detailProduct.userUpdate = p.UserUpdate;
+            if(p.UpdateDate == null)
+                detailProduct.updateDate = "Không có thông tin";
+            else
+            detailProduct.updateDate = p.UpdateDate.ToString();
             return detailProduct;
         }
     }
