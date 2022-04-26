@@ -1,5 +1,7 @@
 using EcommerceSolution.BackendAPI.Data.EF;
 using EcommerceSolution.BackendAPI.Data.Entities;
+using EcommerceSolution.BackendAPI.Services.Brands;
+using EcommerceSolution.BackendAPI.Services.Categories;
 using EcommerceSolution.BackendAPI.Services.Products;
 using EcommerceSolution.BackendAPI.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,11 +31,14 @@ namespace EcommerceSolution.BackendAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ESolutionDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb"))); ;
+                options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb")));
+
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ESolutionDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IUserService, UserService>();
 
@@ -104,9 +109,10 @@ namespace EcommerceSolution.BackendAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
 
             app.UseHttpsRedirection();
 

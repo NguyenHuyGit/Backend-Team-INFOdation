@@ -6,7 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
 using EcommerceSolution.BackendAPI.Data.Entities;
-using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -18,13 +18,38 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         {
             _context = context;
         }
-        
+        private static bool hasSpecialChar(string input)
+        {
+            string specialChar = @"\|!#$%&/()=?»«£§€{}.-;'<>,*";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+
+            return false;
+        }
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
-            var query = from p in _context.Products
-                        where p.Status == 0
-                        select new { p };
             
+
+
+            if (request.Name == null)
+                return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
+            else
+            {
+                var checkSpecialChar = hasSpecialChar(request.Name);
+                if(checkSpecialChar)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+                var checkName = _context.Products.FirstOrDefault(x => x.Name == request.Name);
+                if (checkName != null)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập trùng thông tin sản phẩm.");
+
+                if (request.Quantity < 0)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
+                if (request.CategoryId == 0)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
+            }
+
             var product = new Product()
             {
                 Name = request.Name,
@@ -32,36 +57,12 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Description = request.Description,
                 UserCreate = userCreate,
                 CreateDate = DateTime.Now,
-                CategoryId =  request.CategoryId
+                CategoryId = request.CategoryId
             };
 
-            if (request.Name == null)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
-            else
-            {
-                var checkName = _context.Products.FirstOrDefault(x => x.Name == request.Name);
-                if (checkName != null)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập trùng thông tin sản phẩm.");
-
-                if (request.Quantity < 0)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
-                if(request.CategoryId == 0)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
-            } 
-            
-          
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            var productVm = new ProductVm()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Quantity = product.Quantity,
-                Description = product.Description,
-                UserCreate = product.UserCreate,
-                CreateDate = product.CreateDate,
-                CategoryId = product.CategoryId
-            };
+            
             return new ApiSuccessResult<ProductVm>(new ProductVm()
             {
                 Id = product.Id,
@@ -115,8 +116,8 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     Status = x.p.Status,
                     UserCreate = x.p.UserCreate,
                     CreateDate = x.p.CreateDate,
-                    CategoryId = x.p.CategoryId,
                     Description = x.p.Description,
+                    CategoryId = x.p.CategoryId,
                     UserUpdate = x.p.UserUpdate,
                     UpdateDate = x.p.UpdateDate
                 }).ToListAsync();
@@ -128,6 +129,104 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 PageSize = request.PageSize,
             };
             return pagedResult;
+        }
+
+
+        public async Task<ApiResult<bool>> TempDeleteProduct(int productId)
+        {
+            var p = _context.Products.Single(s => s.Id == productId);
+            p.Status = 1;
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<bool>> PermDeleteProduct(int productId)
+        {
+            var p = _context.Products.Single(s => s.Id == productId);
+            _context.Products.Remove(p);
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate)
+        {
+            //find product by ID
+            var Product = _context.Products.SingleOrDefault(c => c.Id == request.Id);
+            //check exist
+            var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
+            //check validate
+            if (request.Name == null)
+            {
+                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
+            }
+            else
+            {
+                var checkSpecialChar = hasSpecialChar(request.Name);
+                if (checkSpecialChar)
+                    return new ApiErrorResult<ProductUpdateVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+            }
+            if (request.Quantity < 0)
+            {
+                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập đúng số lượng");
+            }
+            if (NameProduct != null && NameProduct.Id != Product.Id)
+            {
+                return new ApiErrorResult<ProductUpdateVm>("cập nhật thất bại , tên đã tồn tại");
+            }
+            else
+            {
+                Product.Name = request.Name;
+                Product.Quantity = request.Quantity;
+                Product.Description = request.Description;
+                Product.UserUpdate = UserUpdate;
+                Product.UpdateDate = DateTime.Now;
+                Product.CategoryId = request.CategoryId;
+            }
+            await _context.SaveChangesAsync();
+            return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Quantity = request.Quantity,
+                Description = request.Description,
+                UserUpdate = UserUpdate,
+                UpdateDate = DateTime.Now,
+                CategoryId = request.CategoryId,
+            });
+
+        }
+        public async Task<ProductDetails> GetProductDetails(int productId)
+        {
+            var p = _context.Products.Single(p => p.Id == productId);
+            var categoryId = p.CategoryId;
+            var c = _context.Categories.Single(c => c.Id == categoryId);
+            var brandId = c.BrandId;
+            var b = _context.Brands.Single(c => c.Id == brandId);
+            var detailProduct = new ProductDetails();
+            detailProduct.Name = p.Name;
+            detailProduct.Quantity = p.Quantity;
+            //if (p.Description == null)
+            //    detailProduct.Description = "Không có thông tin";
+            //else
+                detailProduct.Description = p.Description;
+            detailProduct.brandName = b.Name;
+            detailProduct.categoryName = c.Name;
+            detailProduct.UserCreate = p.UserCreate;
+            detailProduct.CreateDate = p.CreateDate;
+            //detailProduct.CreateDate = (p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds.ToString();
+            //if (p.UserUpdate == null)
+            //    detailProduct.userUpdate = "Không có thông tin";
+            //else
+                detailProduct.userUpdate = p.UserUpdate;
+            //if(p.UpdateDate == null)
+            //    detailProduct.updateDate = "Không có thông tin";
+            //else
+            //{
+            //    DateTime temp = p.UpdateDate.Value;
+            //    detailProduct.updateDate = (temp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds.ToString();
+            //}
+            detailProduct.updateDate = p.UpdateDate;
+            return detailProduct;
         }
     }
 }
