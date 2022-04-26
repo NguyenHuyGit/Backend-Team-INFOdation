@@ -146,18 +146,18 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             return new ApiSuccessResult<bool>();
         }
 
-        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request , string UserUpdate)
+        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate)
         {
             //find product by ID
-            var Product = _context.Products.SingleOrDefault(c=>c.Id==request.Id);
+            var Product = _context.Products.SingleOrDefault(c => c.Id == request.Id);
             //check exist
             var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
             //check validate
-            if(request.Name==null || request.Name=="" )
+            if (request.Name == null || request.Name == "")
             {
                 return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
             }
-            if (request.Quantity <=0)
+            if (request.Quantity <= 0)
             {
                 return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập đúng số lượng");
             }
@@ -174,19 +174,44 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Product.UpdateDate = DateTime.Now;
                 Product.CategoryId = request.CategoryId;
             }
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
-            { Id=request.Id,
-              Name=request.Name,
-              Quantity=request.Quantity,
-              Description=request.Description,
-              UserUpdate=UserUpdate,
-              UpdateDate=DateTime.Now,
-              CategoryId = request.CategoryId,
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Quantity = request.Quantity,
+                Description = request.Description,
+                UserUpdate = UserUpdate,
+                UpdateDate = DateTime.Now,
+                CategoryId = request.CategoryId,
             });
 
         }
-
-
+        public async Task<ProductDetails> GetProductDetails(int productId)
+        {
+            var p = _context.Products.Single(p => p.Id == productId);
+            var categoryId = p.CategoryId;
+            var c = _context.Categories.Single(c => c.Id == categoryId);
+            var brandId = c.BrandId;
+            var b = _context.Brands.Single(c => c.Id == brandId);
+            var detailProduct = new ProductDetails();
+            detailProduct.Name = p.Name;
+            detailProduct.Quantity = p.Quantity;
+            if (p.Description == null)
+                detailProduct.Description = "Không có thông tin";
+            else
+                detailProduct.Description = p.Description;
+            detailProduct.brandName = b.Name;
+            detailProduct.categoryName = c.Name;
+            if (p.UserUpdate == null)
+                detailProduct.userUpdate = "Không có thông tin";
+            else
+                detailProduct.userUpdate = p.UserUpdate;
+            if(p.UpdateDate == null)
+                detailProduct.updateDate = "Không có thông tin";
+            else
+            detailProduct.updateDate = p.UpdateDate.ToString();
+            return detailProduct;
+        }
     }
 }
