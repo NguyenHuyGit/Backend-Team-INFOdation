@@ -109,9 +109,10 @@ namespace EcommerceSolution.BackendAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger EcommerceSolution V1"));
 
             app.UseHttpsRedirection();
 

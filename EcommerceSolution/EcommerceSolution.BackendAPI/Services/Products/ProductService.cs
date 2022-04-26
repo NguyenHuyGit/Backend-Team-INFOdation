@@ -6,6 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
 using EcommerceSolution.BackendAPI.Data.Entities;
+using System.Text.RegularExpressions;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -17,25 +18,28 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         {
             _context = context;
         }
+        private static bool hasSpecialChar(string input)
+        {
+            string specialChar = @"\|!#$%&/()=?»«£§€{}.-;'<>,*";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
 
+            return false;
+        }
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
             
 
-            var product = new Product()
-            {
-                Name = request.Name,
-                Quantity = request.Quantity,
-                Description = request.Description,
-                UserCreate = userCreate,
-                CreateDate = DateTime.Now,
-                CategoryId = request.CategoryId
-            };
 
             if (request.Name == null)
                 return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
             else
             {
+                var checkSpecialChar = hasSpecialChar(request.Name);
+                if(checkSpecialChar)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
                 var checkName = _context.Products.FirstOrDefault(x => x.Name == request.Name);
                 if (checkName != null)
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập trùng thông tin sản phẩm.");
@@ -46,6 +50,15 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
             }
 
+            var product = new Product()
+            {
+                Name = request.Name,
+                Quantity = request.Quantity,
+                Description = request.Description,
+                UserCreate = userCreate,
+                CreateDate = DateTime.Now,
+                CategoryId = request.CategoryId
+            };
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -145,6 +158,12 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             if (request.Name == null)
             {
                 return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
+            }
+            else
+            {
+                var checkSpecialChar = hasSpecialChar(request.Name);
+                if (checkSpecialChar)
+                    return new ApiErrorResult<ProductUpdateVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
             }
             if (request.Quantity < 0)
             {
