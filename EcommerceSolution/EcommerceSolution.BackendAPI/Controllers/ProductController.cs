@@ -78,7 +78,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
 
         }
 
-        [HttpGet("/productDetail/{productId}")]
+        [HttpGet("{productId}")]
         public async Task<IActionResult> GetProductDetails(int productId)
         {
             var result = await _productService.GetProductDetails(productId);
