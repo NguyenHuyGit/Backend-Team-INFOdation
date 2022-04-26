@@ -20,9 +20,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
-            var query = from p in _context.Products
-                        where p.Status == 0
-                        select new { p };
+            
 
             var product = new Product()
             {
@@ -51,16 +49,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            var productVm = new ProductVm()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Quantity = product.Quantity,
-                Description = product.Description,
-                UserCreate = product.UserCreate,
-                CreateDate = product.CreateDate,
-                CategoryId = product.CategoryId
-            };
+            
             return new ApiSuccessResult<ProductVm>(new ProductVm()
             {
                 Id = product.Id,
@@ -153,15 +142,15 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //check exist
             var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
             //check validate
-            if (request.Name == null || request.Name == "")
+            if (request.Name == null)
             {
                 return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
             }
-            if (request.Quantity <= 0)
+            if (request.Quantity < 0)
             {
                 return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập đúng số lượng");
             }
-            if (NameProduct != null)
+            if (NameProduct != null && NameProduct.Id != Product.Id)
             {
                 return new ApiErrorResult<ProductUpdateVm>("cập nhật thất bại , tên đã tồn tại");
             }
@@ -197,20 +186,27 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             var detailProduct = new ProductDetails();
             detailProduct.Name = p.Name;
             detailProduct.Quantity = p.Quantity;
-            if (p.Description == null)
-                detailProduct.Description = "Không có thông tin";
-            else
+            //if (p.Description == null)
+            //    detailProduct.Description = "Không có thông tin";
+            //else
                 detailProduct.Description = p.Description;
             detailProduct.brandName = b.Name;
             detailProduct.categoryName = c.Name;
-            if (p.UserUpdate == null)
-                detailProduct.userUpdate = "Không có thông tin";
-            else
+            detailProduct.UserCreate = p.UserCreate;
+            detailProduct.CreateDate = p.CreateDate;
+            //detailProduct.CreateDate = (p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds.ToString();
+            //if (p.UserUpdate == null)
+            //    detailProduct.userUpdate = "Không có thông tin";
+            //else
                 detailProduct.userUpdate = p.UserUpdate;
-            if(p.UpdateDate == null)
-                detailProduct.updateDate = "Không có thông tin";
-            else
-            detailProduct.updateDate = p.UpdateDate.ToString();
+            //if(p.UpdateDate == null)
+            //    detailProduct.updateDate = "Không có thông tin";
+            //else
+            //{
+            //    DateTime temp = p.UpdateDate.Value;
+            //    detailProduct.updateDate = (temp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds.ToString();
+            //}
+            detailProduct.updateDate = p.UpdateDate;
             return detailProduct;
         }
     }
