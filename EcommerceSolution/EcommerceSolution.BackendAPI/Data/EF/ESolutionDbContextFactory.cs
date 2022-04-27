@@ -14,9 +14,8 @@ namespace EcommerceSolution.BackendAPI.Data.EF
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Development.json")
+                .AddJsonFile("appsettings.json")
                 .Build();
-
             var connectionString = configuration.GetConnectionString("EcommerceSolutionDb");
 
             var optionsBuilder = new DbContextOptionsBuilder<ESolutionDbContext>();
