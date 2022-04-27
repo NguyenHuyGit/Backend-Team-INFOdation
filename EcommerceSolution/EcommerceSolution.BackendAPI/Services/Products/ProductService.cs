@@ -57,7 +57,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Quantity = request.Quantity,
                 Description = request.Description,
                 UserCreate = userCreate,
-                CreateDate = DateTime.Now,
+                CreateDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.AddHours(7)),
                 CategoryId = request.CategoryId,
                 BrandId = request.BrandId
             };
@@ -186,7 +186,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Product.Quantity = request.Quantity;
                 Product.Description = request.Description;
                 Product.UserUpdate = UserUpdate;
-                Product.UpdateDate = DateTime.Now;
+                Product.UpdateDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.AddHours(7));
                 Product.CategoryId = request.CategoryId;
                 Product.BrandId = request.BrandId;
             }
@@ -198,7 +198,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Quantity = request.Quantity,
                 Description = request.Description,
                 UserUpdate = UserUpdate,
-                UpdateDate = DateTime.Now,
+                UpdateDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.AddHours(7)),
                 CategoryId = request.CategoryId,
                 BrandId = request.BrandId,
             });
