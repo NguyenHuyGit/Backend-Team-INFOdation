@@ -108,10 +108,19 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //Paging
             //Convert Datetime to Epoch timestamp:
             //(int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
-            
+            string mess = "";
             int totalRow = await query.CountAsync();
-            if(request.PageSize == 0)
-                request.PageSize = totalRow;
+            if(totalRow > 0)
+            {
+                if (request.PageSize == 0)
+                    request.PageSize = totalRow;
+            }
+            else
+            {
+                request.PageSize = 1;
+                mess = "Không tìm thấy sản phẩm";
+            }
+            
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
@@ -128,12 +137,14 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     UserUpdate = x.p.UserUpdate,
                     UpdateDate = x.p.UpdateDate
                 }).ToListAsync();
+
             var pagedResult = new PagedResult<ProductVm>()
             {
                 TotalRecords = totalRow,
                 Items = data,
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
+                Message = mess
             };
             return pagedResult;
         }

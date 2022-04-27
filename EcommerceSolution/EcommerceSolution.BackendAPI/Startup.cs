@@ -20,6 +20,7 @@ namespace EcommerceSolution.BackendAPI
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,6 +31,15 @@ namespace EcommerceSolution.BackendAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://example.com",
+                                                          "http://www.contoso.com");
+                                  });
+            });
             services.AddDbContext<ESolutionDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("EcommerceSolutionDb")));
 
@@ -101,6 +111,9 @@ namespace EcommerceSolution.BackendAPI
                     IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
                 };
             });
+
+           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,10 +130,11 @@ namespace EcommerceSolution.BackendAPI
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-
+           
 
             app.UseAuthentication();
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
 

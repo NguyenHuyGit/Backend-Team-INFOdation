@@ -29,5 +29,11 @@ namespace EcommerceSolution.BackendAPI.Controllers
             var _categories = await _categoryService.GetCategoryById(categoryId);
             return Ok(_categories);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var _categories = await _categoryService.GetAllCategory();
+            return Ok(_categories);
+        }
     }
 }

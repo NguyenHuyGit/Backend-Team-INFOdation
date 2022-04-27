@@ -8,5 +8,6 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
     {
         Task<List<CategoryVM>> GetCategoryListByBrand(int BrandId);
         Task<CategoryVM> GetCategoryById(int categoryId);
+        Task<List<CategoryAllVm>> GetAllCategory();
     }
 }

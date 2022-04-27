@@ -20,6 +20,22 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
             _context = context;
         }
 
+        public async Task<List<CategoryAllVm>> GetAllCategory()
+        {
+
+            var query = from c in _context.Categories
+                        join b in _context.Brands on c.Id equals b.Id into cib
+                        from b in cib.DefaultIfEmpty()
+                        select c;
+            var cateVm = query.Select(x => new CategoryAllVm()
+            {
+                CategoryId = x.Id,
+                CategoryName = x.Name,
+                BrandId = x.BrandId,
+            });
+            return await cateVm.ToListAsync();
+        }
+
         public async Task<CategoryVM> GetCategoryById(int categoryId)
         {
             var category = await _context.Categories.FindAsync(categoryId);
