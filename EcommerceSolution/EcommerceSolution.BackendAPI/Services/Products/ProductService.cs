@@ -155,10 +155,10 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             return new ApiSuccessResult<bool>();
         }
 
-        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate)
+        public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate, int id)
         {
             //find product by ID
-            var Product = _context.Products.SingleOrDefault(c => c.Id == request.Id);
+            var Product = _context.Products.SingleOrDefault(c => c.Id == id);
             //check exist
             var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
             //check validate
@@ -193,7 +193,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             await _context.SaveChangesAsync();
             return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
             {
-                Id = request.Id,
+                Id = id,
                 Name = request.Name,
                 Quantity = request.Quantity,
                 Description = request.Description,

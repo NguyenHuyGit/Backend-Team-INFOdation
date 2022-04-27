@@ -20,7 +20,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
         }
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody]LoginRequest request)
+        public async Task<IActionResult> Login([FromForm]LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -34,6 +34,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
             return Ok(result);
         }
         [HttpGet("name")]
+        [Authorize]
         public IActionResult GetUserName()
         {
             var name = User.FindFirstValue(ClaimTypes.GivenName);
