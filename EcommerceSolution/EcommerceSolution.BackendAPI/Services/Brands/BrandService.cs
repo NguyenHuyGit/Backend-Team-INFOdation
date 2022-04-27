@@ -29,6 +29,8 @@ namespace EcommerceSolution.BackendAPI.Services.Brands
         public async Task<BrandVM> GetBrandByCategory(int CategoryId)
         {
             var category = await _context.Categories.FindAsync(CategoryId);
+            if (category == null)
+                return null;
             var brand = await _context.Brands.FindAsync(category.BrandId);
             var brandVM = new BrandVM()
             {
@@ -36,6 +38,17 @@ namespace EcommerceSolution.BackendAPI.Services.Brands
                 Name = brand.Name
             };
             return brandVM;
+        }
+        public async Task<BrandVM> GetBrandById(int brandId)
+        {
+            var brand = await _context.Brands.FindAsync(brandId);
+            if(brand == null)
+                return null;
+            return new BrandVM()
+            {
+                Id = brandId,
+                Name = brand.Name
+            };
         }
     }
 }

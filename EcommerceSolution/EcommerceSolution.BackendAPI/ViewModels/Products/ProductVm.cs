@@ -14,5 +14,6 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Products
         public string UserCreate { get; set; }
         public DateTime CreateDate { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
     }
 }

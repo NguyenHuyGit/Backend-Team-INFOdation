@@ -20,6 +20,18 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
             _context = context;
         }
 
+        public async Task<CategoryVM> GetCategoryById(int categoryId)
+        {
+            var category = await _context.Categories.FindAsync(categoryId);
+            if (category == null)
+                return null;
+            return new CategoryVM()
+            {
+                Id = categoryId,
+                Name = category.Name,
+                BrandId = category.BrandId
+            };
+        }
 
         public async Task<List<CategoryVM>> GetCategoryListByBrand(int BrandId)
         {
@@ -29,6 +41,8 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
                 Name = c.Name,
                 BrandId = c.BrandId,
             });
+            if (categories == null)
+                return new List<CategoryVM>();
             return await categories.ToListAsync();
         }
     }

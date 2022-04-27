@@ -30,8 +30,6 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         }
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
-            
-
 
             if (request.Name == null)
                 return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
@@ -46,8 +44,11 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
                 if (request.Quantity < 0)
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
+                if (request.BrandId == 0)
+                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn hãng.");
                 if (request.CategoryId == 0)
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
+                
             }
 
             var product = new Product()
@@ -57,7 +58,8 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Description = request.Description,
                 UserCreate = userCreate,
                 CreateDate = DateTime.Now,
-                CategoryId = request.CategoryId
+                CategoryId = request.CategoryId,
+                BrandId = request.BrandId
             };
 
             _context.Products.Add(product);
@@ -71,7 +73,8 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Description = product.Description,
                 UserCreate = product.UserCreate,
                 CreateDate = product.CreateDate,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                BrandId = product.BrandId
             });
 
         }
@@ -105,7 +108,10 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //Paging
             //Convert Datetime to Epoch timestamp:
             //(int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
+            
             int totalRow = await query.CountAsync();
+            if(request.PageSize == 0)
+                request.PageSize = totalRow;
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
@@ -118,6 +124,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     CreateDate = x.p.CreateDate,
                     Description = x.p.Description,
                     CategoryId = x.p.CategoryId,
+                    BrandId = x.p.BrandId,
                     UserUpdate = x.p.UserUpdate,
                     UpdateDate = x.p.UpdateDate
                 }).ToListAsync();
@@ -181,6 +188,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 Product.UserUpdate = UserUpdate;
                 Product.UpdateDate = DateTime.Now;
                 Product.CategoryId = request.CategoryId;
+                Product.BrandId = request.BrandId;
             }
             await _context.SaveChangesAsync();
             return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
@@ -192,6 +200,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 UserUpdate = UserUpdate,
                 UpdateDate = DateTime.Now,
                 CategoryId = request.CategoryId,
+                BrandId = request.BrandId,
             });
 
         }
@@ -200,7 +209,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             var p = _context.Products.Single(p => p.Id == productId);
             var categoryId = p.CategoryId;
             var c = _context.Categories.Single(c => c.Id == categoryId);
-            var brandId = c.BrandId;
+            var brandId = p.BrandId;
             var b = _context.Brands.Single(c => c.Id == brandId);
             var detailProduct = new ProductDetails();
             detailProduct.Name = p.Name;
