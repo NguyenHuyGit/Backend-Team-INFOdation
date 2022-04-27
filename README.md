@@ -1,20 +1,20 @@
 # Welcome to Backend Team - INFOdation
 
-#How to run:
+# How to run:
 
-##Download .NET Core 3.1 SDK, .NET Core 3.1 Runtime
+## Download .NET Core 3.1 SDK, .NET Core 3.1 Runtime
 
-##Tools: Visual Studio 2019, SQL Server 2019
+## Tools: Visual Studio 2019, SQL Server 2019
 
-##Migration database:
+## Migration database:
 
-##Edit Connection string in appsettings.json
+## Edit Connection string in appsettings.json
 
-##Visual Studio -> Tools -> Nuget package manager -> Package manager console
+## Visual Studio -> Tools -> Nuget package manager -> Package manager console
 
-##Enter: add-migration NewDb123
+## Enter: add-migration NewDb123
 
-##Enter: update-database
+## Enter: update-database
 
 
 ## + Nguyen Van Liem joined (https://github.com/liemnv60cntt)
