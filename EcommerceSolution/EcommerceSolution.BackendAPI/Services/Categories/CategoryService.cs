@@ -20,12 +20,17 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
             _context = context;
         }
 
-        public async Task<string> GetCategoryById(int categoryId)
+        public async Task<CategoryVM> GetCategoryById(int categoryId)
         {
             var category = await _context.Categories.FindAsync(categoryId);
             if (category == null)
                 return null;
-            return category.Name;
+            return new CategoryVM()
+            {
+                Id = categoryId,
+                Name = category.Name,
+                BrandId = category.BrandId
+            };
         }
 
         public async Task<List<CategoryVM>> GetCategoryListByBrand(int BrandId)
