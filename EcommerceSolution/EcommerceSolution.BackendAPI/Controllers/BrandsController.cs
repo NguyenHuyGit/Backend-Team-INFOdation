@@ -28,6 +28,12 @@ namespace EcommerceSolution.BackendAPI.Controllers
             var brand = await _brandService.GetBrandByCategory(CategoryId);
             return Ok(brand);
         }
+        [HttpGet("name/{brandId}")]
+        public async Task<IActionResult> GetBrandById(int brandId)
+        {
+            var brand = await _brandService.GetBrandById(brandId);
+            return Ok(brand);
+        }
 
     }
 }

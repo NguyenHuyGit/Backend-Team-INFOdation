@@ -7,5 +7,6 @@ namespace EcommerceSolution.BackendAPI.Services.Categories
     public interface ICategoryService
     {
         Task<List<CategoryVM>> GetCategoryListByBrand(int BrandId);
+        Task<string> GetCategoryById(int categoryId);
     }
 }

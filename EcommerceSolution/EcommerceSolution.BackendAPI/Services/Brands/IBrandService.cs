@@ -9,6 +9,6 @@ namespace EcommerceSolution.BackendAPI.Services.Brands
     {
         Task<List<BrandVM>> GetBrandList();
         Task<BrandVM> GetBrandByCategory(int CategoryId);
-
+        Task<string> GetBrandById(int brandId);
     }
 }
