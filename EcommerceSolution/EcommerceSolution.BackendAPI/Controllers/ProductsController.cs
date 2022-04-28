@@ -36,6 +36,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
         public async Task<IActionResult> TempDeleteProduct(int productId)
         {
             var result = await _productService.TempDeleteProduct(productId);
+            
             return Ok(result);
         }
 
@@ -43,6 +44,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
         public async Task<IActionResult> PermDeleteProduct(int productId)
         {
             var result = await _productService.PermDeleteProduct(productId);
+            
             return Ok(result);
         }
 

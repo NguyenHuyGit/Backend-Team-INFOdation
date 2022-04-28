@@ -184,7 +184,9 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
         public async Task<ApiResult<bool>> TempDeleteProduct(int productId)
         {
-            var p = _context.Products.Single(s => s.Id == productId);
+            var p = await _context.Products.FindAsync(productId);
+            if(p == null)
+                return new ApiMessageResult<bool>(false, $"Không tìm thấy sản phẩm với ID {productId}");
             p.Status = 1;
             await _context.SaveChangesAsync();
             return new ApiMessageResult<bool>(true, "Xóa tạm thời thành công");
@@ -192,7 +194,9 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
         public async Task<ApiResult<bool>> PermDeleteProduct(int productId)
         {
-            var p = _context.Products.Single(s => s.Id == productId);
+            var p = await _context.Products.FindAsync(productId);
+            if (p == null)
+                return new ApiMessageResult<bool>(false, $"Không tìm thấy sản phẩm với ID {productId}");
             _context.Products.Remove(p);
             await _context.SaveChangesAsync();
             return new ApiMessageResult<bool>(true, "Xóa thành công");
