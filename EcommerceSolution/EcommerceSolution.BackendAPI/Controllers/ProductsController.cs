@@ -33,7 +33,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
         }
 
         [HttpPut("delete/{productId}")]
-        public async Task<IActionResult> TempDeleteProduct([FromForm] int productId)
+        public async Task<IActionResult> TempDeleteProduct(int productId)
         {
             if (!ModelState.IsValid)
             {
