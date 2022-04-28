@@ -13,6 +13,6 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
         Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate);
         Task<ApiResult<ProductUpdateVm>> UpdateProductById (ProductUpdate productUpdate , string UserUpdate, int id);
-        Task<ProductDetails> GetProductDetails(int productId);
+        Task<ApiResult<ProductDetails>> GetProductDetails(int productId);
     }
 }

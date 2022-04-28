@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using EcommerceSolution.BackendAPI.Data.EF;
 using EcommerceSolution.BackendAPI.Data.Entities;
 using System.Text.RegularExpressions;
+using EcommerceSolution.BackendAPI.ViewModels.Categories;
+using System.Collections.Generic;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -28,6 +30,24 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
             return false;
         }
+        private bool CheckCategoriesInBrand(int BrandId, int CategoryId)
+        {
+            var categories = _context.Categories.Where(c => c.BrandId == BrandId && c.Id == CategoryId).Select(c => new CategoryVM
+            {
+                Id = c.Id,
+                Name = c.Name,
+                BrandId = c.BrandId,
+            });
+            if (categories == null)
+                return false;
+            foreach (var category in categories)
+            {
+                if(category.BrandId == BrandId)
+                    return true;
+            }
+            return false;
+
+        }
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
 
@@ -48,7 +68,13 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn hãng.");
                 if (request.CategoryId == 0)
                     return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
-                
+                else
+                {
+                    var checkCateInBrand = CheckCategoriesInBrand(request.BrandId, request.CategoryId);
+                    if (!checkCateInBrand)
+                        return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Loại sản phẩm và Hãng không trùng khớp.");
+                }
+
             }
 
             var product = new Product()
@@ -155,7 +181,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             var p = _context.Products.Single(s => s.Id == productId);
             p.Status = 1;
             await _context.SaveChangesAsync();
-            return new ApiSuccessResult<bool>();
+            return new ApiMessageResult<bool>(true, "Xóa tạm thời thành công");
         }
 
         public async Task<ApiResult<bool>> PermDeleteProduct(int productId)
@@ -163,7 +189,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             var p = _context.Products.Single(s => s.Id == productId);
             _context.Products.Remove(p);
             await _context.SaveChangesAsync();
-            return new ApiSuccessResult<bool>();
+            return new ApiMessageResult<bool>(true, "Xóa thành công");
         }
 
         public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate, int id)
@@ -215,9 +241,11 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             });
 
         }
-        public async Task<ProductDetails> GetProductDetails(int productId)
+        public async Task<ApiResult<ProductDetails>> GetProductDetails(int productId)
         {
-            var p = _context.Products.Single(p => p.Id == productId);
+            var p = await _context.Products.FindAsync(productId);
+            if (p == null)
+                return new ApiErrorResult<ProductDetails>($"Không tìm thấy sản phẩm với ID: {productId}");
             var categoryId = p.CategoryId;
             var c = _context.Categories.Single(c => c.Id == categoryId);
             var brandId = p.BrandId;
@@ -246,7 +274,8 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //    detailProduct.updateDate = (temp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds.ToString();
             //}
             detailProduct.updateDate = p.UpdateDate;
-            return detailProduct;
+            detailProduct.Status = p.Status;
+            return new ApiSuccessResult<ProductDetails>(detailProduct);
         }
     }
 }

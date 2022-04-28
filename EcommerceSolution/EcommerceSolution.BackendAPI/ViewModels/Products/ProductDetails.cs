@@ -13,5 +13,6 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Products
         public DateTime CreateDate { get; set; }
         public string userUpdate { get; set; }
         public DateTime? updateDate { get; set; }
+        public int Status { get; set; }
     }
 }
