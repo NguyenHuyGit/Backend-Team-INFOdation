@@ -22,7 +22,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         }
         private static bool hasSpecialChar(string input)
         {
-            string specialChar = @"\|!#$%&/()=?»«£§€{}.-;'<>,*";
+            string specialChar = @"\/|!#$%&/()=?»«£§€{}.-;'<>,*^+~`:[]";
             foreach (var item in specialChar)
             {
                 if (input.Contains(item)) return true;
@@ -50,33 +50,39 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         }
         public async Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate)
         {
-
-            if (request.Name == null)
-                return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa nhập tên sản phấm.");
+            List<string> errors = new List<string>();
+            if (string.IsNullOrEmpty(request.Name))
+                errors.Add("Thêm mới không thành công. Bạn chưa nhập tên sản phẩm.");
             else
             {
                 var checkSpecialChar = hasSpecialChar(request.Name);
-                if(checkSpecialChar)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+                if (checkSpecialChar)
+                    errors.Add("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+
                 var checkName = _context.Products.FirstOrDefault(x => x.Name == request.Name);
                 if (checkName != null)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn nhập trùng thông tin sản phẩm.");
+                    errors.Add("Thêm mới không thành công. Bạn nhập trùng tên sản phẩm.");
+            }
+                
 
                 if (request.Quantity < 0)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
-                if (request.BrandId == 0)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn hãng.");
-                if (request.CategoryId == 0)
-                    return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
+                    errors.Add("Thêm mới không thành công. Số lượng phải là số nguyên dương.");
+
+                if (request.BrandId <= 0)
+                    errors.Add("Thêm mới không thành công. Bạn chưa chọn hãng.");
+
+                if (request.CategoryId <= 0)
+                    errors.Add("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
                 else
                 {
                     var checkCateInBrand = CheckCategoriesInBrand(request.BrandId, request.CategoryId);
                     if (!checkCateInBrand)
-                        return new ApiErrorResult<ProductVm>("Thêm mới không thành công. Loại sản phẩm và Hãng không trùng khớp.");
+                        errors.Add("Thêm mới không thành công. Loại sản phẩm và Hãng không trùng khớp.");
                 }
-
-            }
-
+            
+            String[] str = errors.ToArray();
+            if (str.Length > 0)
+                return new ApiValidationErrors<ProductVm>(str);
             var product = new Product()
             {
                 Name = request.Name,
@@ -194,39 +200,54 @@ namespace EcommerceSolution.BackendAPI.Services.Products
 
         public async Task<ApiResult<ProductUpdateVm>> UpdateProductById(ProductUpdate request, string UserUpdate, int id)
         {
+            List<string> errors = new List<string>();
             //find product by ID
             var Product = _context.Products.SingleOrDefault(c => c.Id == id);
             //check exist
             var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
             //check validate
-            if (request.Name == null)
+            if (string.IsNullOrEmpty(request.Name))
             {
-                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập tên sản phẩm");
+                errors.Add("Cập nhật thất bại,mời nhập tên sản phẩm");
             }
             else
             {
                 var checkSpecialChar = hasSpecialChar(request.Name);
                 if (checkSpecialChar)
-                    return new ApiErrorResult<ProductUpdateVm>("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+                    errors.Add("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
             }
             if (request.Quantity < 0)
             {
-                return new ApiErrorResult<ProductUpdateVm>("Cập nhật thất bại,mời nhập đúng số lượng");
+                errors.Add("Cập nhật thất bại,mời nhập đúng số lượng");
             }
             if (NameProduct != null && NameProduct.Id != Product.Id)
             {
-                return new ApiErrorResult<ProductUpdateVm>("cập nhật thất bại , tên đã tồn tại");
+                errors.Add("Cập nhật thất bại , tên đã tồn tại");
             }
+            if (request.BrandId <= 0)
+                errors.Add("Thêm mới không thành công. Bạn chưa chọn hãng.");
+
+            if (request.CategoryId <= 0)
+                errors.Add("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
             else
             {
-                Product.Name = request.Name;
-                Product.Quantity = request.Quantity;
-                Product.Description = request.Description;
-                Product.UserUpdate = UserUpdate;
-                Product.UpdateDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.AddHours(7));
-                Product.CategoryId = request.CategoryId;
-                Product.BrandId = request.BrandId;
+                var checkCateInBrand = CheckCategoriesInBrand(request.BrandId, request.CategoryId);
+                if (!checkCateInBrand)
+                    errors.Add("Cập nhật không thành công. Loại sản phẩm và Hãng không trùng khớp.");
             }
+            String[] str = errors.ToArray();
+            //If errors have any error then return:
+            if (errors.Count > 0)
+                return new ApiValidationErrors<ProductUpdateVm>(str);
+            //If errors is empty then update product
+            Product.Name = request.Name;
+            Product.Quantity = request.Quantity;
+            Product.Description = request.Description;
+            Product.UserUpdate = UserUpdate;
+            Product.UpdateDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now.AddHours(7));
+            Product.CategoryId = request.CategoryId;
+            Product.BrandId = request.BrandId;
+            
             await _context.SaveChangesAsync();
             return new ApiSuccessResult<ProductUpdateVm>(new ProductUpdateVm()
             {
