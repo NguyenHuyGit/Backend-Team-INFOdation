@@ -22,7 +22,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         }
         private static bool hasSpecialChar(string input)
         {
-            string specialChar = @"\/|!#$%&/()=?»«£§€{}.-;'<>,*^+~`:[]";
+            string specialChar = @"\/|!#$%&/()=?»«£§€{}.-;'<>,*^+~`:[]" + '"';
             foreach (var item in specialChar)
             {
                 if (input.Contains(item)) return true;
