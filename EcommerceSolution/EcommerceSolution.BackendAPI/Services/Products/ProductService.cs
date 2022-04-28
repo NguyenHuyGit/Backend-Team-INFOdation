@@ -206,33 +206,35 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         {
             List<string> errors = new List<string>();
             //find product by ID
-            var Product = _context.Products.SingleOrDefault(c => c.Id == id);
+            var Product = await _context.Products.FindAsync(id);
+            if(Product == null)
+                errors.Add($"Cập nhật không thành công, không tìm thấy sản phẩm với ID {id}");
             //check exist
             var NameProduct = _context.Products.FirstOrDefault(x => x.Name == request.Name);
             //check validate
             if (string.IsNullOrEmpty(request.Name))
             {
-                errors.Add("Cập nhật thất bại,mời nhập tên sản phẩm");
+                errors.Add("Cập nhật không thành công,mời nhập tên sản phẩm");
             }
             else
             {
                 var checkSpecialChar = hasSpecialChar(request.Name);
                 if (checkSpecialChar)
-                    errors.Add("Thêm mới không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
+                    errors.Add("Cập nhật không thành công. Bạn nhập ký tự đặc biệt ngoài @ _.");
             }
             if (request.Quantity < 0)
             {
-                errors.Add("Cập nhật thất bại,mời nhập đúng số lượng");
+                errors.Add("Cập nhật không thành công,mời nhập đúng số lượng");
             }
             if (NameProduct != null && NameProduct.Id != Product.Id)
             {
-                errors.Add("Cập nhật thất bại , tên đã tồn tại");
+                errors.Add("Cập nhật không thành công, tên đã tồn tại");
             }
             if (request.BrandId <= 0)
-                errors.Add("Thêm mới không thành công. Bạn chưa chọn hãng.");
+                errors.Add("Cập nhật không thành công. Bạn chưa chọn hãng.");
 
             if (request.CategoryId <= 0)
-                errors.Add("Thêm mới không thành công. Bạn chưa chọn loại sản phẩm.");
+                errors.Add("Cập nhật không thành công. Bạn chưa chọn loại sản phẩm.");
             else
             {
                 var checkCateInBrand = CheckCategoriesInBrand(request.BrandId, request.CategoryId);
