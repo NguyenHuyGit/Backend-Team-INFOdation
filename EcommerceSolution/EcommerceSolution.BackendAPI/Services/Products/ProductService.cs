@@ -136,6 +136,17 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             //Search by name
             if (!string.IsNullOrEmpty(request.Keyword))
             {
+                var checkSpecialChar = hasSpecialChar(request.Keyword);
+                if (checkSpecialChar)
+                {
+                    return new PagedResult<ProductVm>()
+                    {
+                        TotalRecords = 0,
+                        PageIndex = 1,
+                        PageSize = 1,
+                        Message = "Không tìm thấy sản phẩm"
+                    };
+                }; 
                 query = query.FindAll(delegate (Product p)
                 {
                     if (ConvertToUnSign(p.Name.ToLower()).Contains(ConvertToUnSign(request.Keyword.ToLower())))
