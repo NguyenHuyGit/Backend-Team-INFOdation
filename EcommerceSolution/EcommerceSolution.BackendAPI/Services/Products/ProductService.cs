@@ -9,6 +9,7 @@ using EcommerceSolution.BackendAPI.Data.Entities;
 using System.Text.RegularExpressions;
 using EcommerceSolution.BackendAPI.ViewModels.Categories;
 using System.Collections.Generic;
+using System.Text;
 
 namespace EcommerceSolution.BackendAPI.Services.Products
 {
@@ -110,38 +111,62 @@ namespace EcommerceSolution.BackendAPI.Services.Products
             });
 
         }
-
+        private string ConvertToUnSign(string input)
+        {
+            input = input.Trim();
+            for (int i = 0x20; i < 0x30; i++)
+            {
+                input = input.Replace(((char)i).ToString(), " ");
+            }
+            Regex regex = new Regex(@"\p{IsCombiningDiacriticalMarks}+");
+            string str = input.Normalize(NormalizationForm.FormD);
+            string str2 = regex.Replace(str, string.Empty).Replace('đ', 'd').Replace('Đ', 'D');
+            while (str2.IndexOf("?") >= 0)
+            {
+                str2 = str2.Remove(str2.IndexOf("?"), 1);
+            }
+            return str2;
+        }
         public async Task<PagedResult<ProductVm>> GetProductList(GetProductListRequest request)
         {
             //Select products
-            var query = from p in _context.Products
+            List<Product> query = await (from p in _context.Products
                         where p.Status == 0
-                        select new { p };
+                        select p ).ToListAsync();
             //Search by name
             if (!string.IsNullOrEmpty(request.Keyword))
-                query = query.Where(x => x.p.Name.Contains(request.Keyword));
+            {
+                query = query.FindAll(delegate (Product p)
+                {
+                    if (ConvertToUnSign(p.Name.ToLower()).Contains(ConvertToUnSign(request.Keyword.ToLower())))
+                        return true;
+                    else
+                        return false;
+                });
+            }
+                //query = query.Where(x => x.p.Name.Contains(request.Keyword));
             //Sort by name or create date
 
             switch (request.SortOrder)
             {
                 case "name_asc":
-                    query = query.OrderBy(s => s.p.Name);
+                    query = query.OrderBy(s => s.Name).ToList();
                     break;
                 case "name_desc":
-                    query = query.OrderByDescending(s => s.p.Name);
+                    query = query.OrderByDescending(s => s.Name).ToList();
                     break;
                 case "date_asc":
-                    query = query.OrderBy(s => s.p.CreateDate);
+                    query = query.OrderBy(s => s.CreateDate).ToList();
                     break;
                 default:
-                    query = query.OrderByDescending(s => s.p.CreateDate);
+                    query = query.OrderByDescending(s => s.CreateDate).ToList();
                     break;
             }
             //Paging
             //Convert Datetime to Epoch timestamp:
             //(int)(x.p.CreateDate - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
             string mess = "";
-            int totalRow = await query.CountAsync();
+            int totalRow = query.Count();
             if(totalRow > 0)
             {
                 if (request.PageSize == 0)
@@ -153,27 +178,27 @@ namespace EcommerceSolution.BackendAPI.Services.Products
                 mess = "Không tìm thấy sản phẩm";
             }
             
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
                 {
-                    Id = x.p.Id,
-                    Name = x.p.Name,
-                    Quantity = x.p.Quantity,
-                    Status = x.p.Status,
-                    UserCreate = x.p.UserCreate,
-                    CreateDate = x.p.CreateDate,
-                    Description = x.p.Description,
-                    CategoryId = x.p.CategoryId,
-                    BrandId = x.p.BrandId,
-                    UserUpdate = x.p.UserUpdate,
-                    UpdateDate = x.p.UpdateDate
-                }).ToListAsync();
+                    Id = x.Id,
+                    Name = x.Name,
+                    Quantity = x.Quantity,
+                    Status = x.Status,
+                    UserCreate = x.UserCreate,
+                    CreateDate = x.CreateDate,
+                    Description = x.Description,
+                    CategoryId = x.CategoryId,
+                    BrandId = x.BrandId,
+                    UserUpdate = x.UserUpdate,
+                    UpdateDate = x.UpdateDate
+                });
 
             var pagedResult = new PagedResult<ProductVm>()
             {
                 TotalRecords = totalRow,
-                Items = data,
+                Items = data.ToList(),
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize,
                 Message = mess
