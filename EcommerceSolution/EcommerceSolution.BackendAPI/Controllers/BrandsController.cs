@@ -1,4 +1,5 @@
 ﻿using EcommerceSolution.BackendAPI.Services.Brands;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BrandsController : ControllerBase
     {
         private readonly IBrandService _brandService;

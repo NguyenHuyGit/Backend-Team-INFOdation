@@ -5,8 +5,8 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Products
 {
     public class ProductUpdate
     {
-        public int Id { get; set; }
         public string Name { get; set; }
+        [Required]
         public int Quantity { get; set; }
         public string Description { get; set; }
         //public string UserUpdate { get; set; }
@@ -14,7 +14,9 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Products
         //public int Status { get; set; }
         //public string UserCreate { get; set; }
         //public DateTime CreateDate { get; set; }
+        [Required]
         public int CategoryId { get; set; }
+        [Required]
         public int BrandId { get; set; }
     }
 }

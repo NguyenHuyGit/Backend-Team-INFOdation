@@ -12,7 +12,7 @@ namespace EcommerceSolution.BackendAPI.Services.Products
         Task<ApiResult<bool>> PermDeleteProduct(int productId);
 
         Task<ApiResult<ProductVm>> CreateProduct(ProductCreateRequest request, string userCreate);
-        Task<ApiResult<ProductUpdateVm>> UpdateProductById (ProductUpdate productUpdate , string UserUpdate);
-        Task<ProductDetails> GetProductDetails(int productId);
+        Task<ApiResult<ProductUpdateVm>> UpdateProductById (ProductUpdate productUpdate , string UserUpdate, int id);
+        Task<ApiResult<ProductDetails>> GetProductDetails(int productId);
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EcommerceSolution.BackendAPI.Migrations
 {
-    public partial class FinalDb : Migration
+    public partial class NewDbV3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -165,11 +165,17 @@ namespace EcommerceSolution.BackendAPI.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UserUpdate = table.Column<string>(nullable: true),
                     UpdateDate = table.Column<DateTime>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>(nullable: false),
+                    BrandId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -195,8 +201,8 @@ namespace EcommerceSolution.BackendAPI.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "3686be03-7a0d-4895-b316-7dbba283b45d", "backendteam@gmail.com", true, "Hung", "Nguyen", false, null, "backendteam@gmail.com", "admin", "AQAAAAEAACcQAAAAEO2hdo1R12uTOl+S+wcCW1FmoSeh7jSGvvi2f+ERkoHDAmrLivv0SSfegKcMrHhepw==", null, false, "", false, "admin" },
-                    { new Guid("cdf5c8fb-b7c0-455c-8134-94ef0cf92717"), 0, "e68d44e7-ffb1-4b40-8a95-88aba30362e1", "backend@gmail.com", true, "Liem", "Nguyen", false, null, "backend@gmail.com", "liemnv", "AQAAAAEAACcQAAAAEMmhtvLeFf4LAPw5HB70K/LApkaBajsUxCrUCKuBzrSg0OxPXcD4Al1CGwp7klvunQ==", null, false, "", false, "liemnv" }
+                    { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "5b0179cb-db15-48f5-a093-3fa18f86b82f", "backendteam@gmail.com", true, "Hung", "Nguyen", false, null, "backendteam@gmail.com", "admin", "AQAAAAEAACcQAAAAEOdUKqJV0A5lKqR9VP4A22Kdq/kNkyEFBFal/OYloE7w1GkI2H3jnNAvXHZjGI5xWg==", null, false, "", false, "admin" },
+                    { new Guid("cdf5c8fb-b7c0-455c-8134-94ef0cf92717"), 0, "7eb32fc9-36cb-46f9-b264-f274472af201", "backend@gmail.com", true, "Liem", "Nguyen", false, null, "backend@gmail.com", "liemnv", "AQAAAAEAACcQAAAAEPDHOPVPGyYg6D81859A+qmET1+r1bql76bfMvgv4IwOIi+kh5+LKbfW/XUYELWblA==", null, false, "", false, "liemnv" }
                 });
 
             migrationBuilder.InsertData(
@@ -218,20 +224,25 @@ namespace EcommerceSolution.BackendAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "CreateDate", "Description", "Name", "Quantity", "UpdateDate", "UserCreate", "UserUpdate" },
+                columns: new[] { "Id", "BrandId", "CategoryId", "CreateDate", "Description", "Name", "Quantity", "UpdateDate", "UserCreate", "UserUpdate" },
                 values: new object[,]
                 {
-                    { 3, 1, new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1203), "Sạc 100W", "Củ sạc laptop M01", 10, null, "Liêm", null },
-                    { 1, 4, new DateTime(2022, 4, 25, 19, 48, 9, 862, DateTimeKind.Local).AddTicks(2179), "Laptop văn phòng", "Vostro 3578", 3, null, "Liêm", null },
-                    { 6, 4, new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1210), "Laptop văn phòng mạnh mẽ", "Vostro 7799", 2, null, "Liêm", null },
-                    { 5, 9, new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1208), "Laptop gaming mạnh mẽ", "TUF Gaming 22KW", 2, null, "Liêm", null },
-                    { 2, 5, new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1168), "Điện thoại thời thượng", "Galaxy A52s", 5, null, "Liêm", null },
-                    { 4, 7, new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1206), "Điện thoại cao cấp", "Iphone 13 Pro Max", 5, null, "Liêm", null }
+                    { 3, 1, 1, new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9097), "Sạc 100W", "Củ sạc laptop M01", 10, null, "Liêm", null },
+                    { 1, 1, 4, new DateTime(2022, 4, 27, 8, 59, 51, 599, DateTimeKind.Local).AddTicks(9889), "Laptop văn phòng", "Vostro 3578", 3, null, "Liêm", null },
+                    { 6, 1, 4, new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9104), "Laptop văn phòng mạnh mẽ", "Vostro 7799", 2, null, "Liêm", null },
+                    { 5, 2, 9, new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9102), "Laptop gaming mạnh mẽ", "TUF Gaming 22KW", 2, null, "Liêm", null },
+                    { 2, 5, 5, new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9050), "Điện thoại thời thượng", "Galaxy A52s", 5, null, "Liêm", null },
+                    { 4, 6, 7, new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9100), "Điện thoại cao cấp", "Iphone 13 Pro Max", 5, null, "Liêm", null }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_BrandId",
                 table: "Categories",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_BrandId",
+                table: "Products",
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(

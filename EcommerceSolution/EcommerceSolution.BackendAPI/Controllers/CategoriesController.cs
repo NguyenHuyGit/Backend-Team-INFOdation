@@ -1,4 +1,5 @@
 ﻿using EcommerceSolution.BackendAPI.Services.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -25,6 +27,12 @@ namespace EcommerceSolution.BackendAPI.Controllers
         public async Task<IActionResult> GetCategoryId(int categoryId)
         {
             var _categories = await _categoryService.GetCategoryById(categoryId);
+            return Ok(_categories);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var _categories = await _categoryService.GetAllCategory();
             return Ok(_categories);
         }
     }

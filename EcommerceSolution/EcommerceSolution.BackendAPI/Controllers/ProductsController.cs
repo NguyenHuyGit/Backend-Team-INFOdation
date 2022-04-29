@@ -1,7 +1,7 @@
-
+﻿
 using EcommerceSolution.BackendAPI.Services.Products;
 using EcommerceSolution.BackendAPI.ViewModels.Products;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +15,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -34,7 +35,12 @@ namespace EcommerceSolution.BackendAPI.Controllers
         [HttpPut("delete/{productId}")]
         public async Task<IActionResult> TempDeleteProduct(int productId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var result = await _productService.TempDeleteProduct(productId);
+            
             return Ok(result);
         }
 
@@ -42,6 +48,7 @@ namespace EcommerceSolution.BackendAPI.Controllers
         public async Task<IActionResult> PermDeleteProduct(int productId)
         {
             var result = await _productService.PermDeleteProduct(productId);
+            
             return Ok(result);
         }
 
@@ -61,15 +68,16 @@ namespace EcommerceSolution.BackendAPI.Controllers
             }
             return Ok(result);
         }
-        [HttpPut]
-        public async Task<IActionResult> ProductUpdate([FromForm]string UserUpdate, ProductUpdate request)
+        [HttpPut("{productId}")]
+        public async Task<IActionResult> ProductUpdate([FromForm] ProductUpdate request, int productId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+    
             var n = User.FindFirstValue(ClaimTypes.GivenName);
-            var result = await _productService.UpdateProductById(request, n);
+            var result = await _productService.UpdateProductById(request, n, productId);
             if (result.IsSuccessed)
             {
                 return Ok(result);

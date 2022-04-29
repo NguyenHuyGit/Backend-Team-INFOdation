@@ -39,6 +39,7 @@ namespace EcommerceSolution.BackendAPI.Services.Brands
             };
             return brandVM;
         }
+
         public async Task<BrandVM> GetBrandById(int brandId)
         {
             var brand = await _context.Brands.FindAsync(brandId);
@@ -50,5 +51,6 @@ namespace EcommerceSolution.BackendAPI.Services.Brands
                 Name = brand.Name
             };
         }
+        
     }
 }

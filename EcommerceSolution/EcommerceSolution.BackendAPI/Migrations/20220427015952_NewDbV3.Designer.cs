@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceSolution.BackendAPI.Migrations
 {
     [DbContext(typeof(ESolutionDbContext))]
-    [Migration("20220425124810_FinalDb")]
-    partial class FinalDb
+    [Migration("20220427015952_NewDbV3")]
+    partial class NewDbV3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,6 +167,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -202,6 +205,8 @@ namespace EcommerceSolution.BackendAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
@@ -210,8 +215,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 1,
+                            BrandId = 1,
                             CategoryId = 4,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 862, DateTimeKind.Local).AddTicks(2179),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 599, DateTimeKind.Local).AddTicks(9889),
                             Description = "Laptop văn phòng",
                             Name = "Vostro 3578",
                             Quantity = 3,
@@ -221,8 +227,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 2,
+                            BrandId = 5,
                             CategoryId = 5,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1168),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9050),
                             Description = "Điện thoại thời thượng",
                             Name = "Galaxy A52s",
                             Quantity = 5,
@@ -232,8 +239,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 3,
+                            BrandId = 1,
                             CategoryId = 1,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1203),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9097),
                             Description = "Sạc 100W",
                             Name = "Củ sạc laptop M01",
                             Quantity = 10,
@@ -243,8 +251,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 4,
+                            BrandId = 6,
                             CategoryId = 7,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1206),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9100),
                             Description = "Điện thoại cao cấp",
                             Name = "Iphone 13 Pro Max",
                             Quantity = 5,
@@ -254,8 +263,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 5,
+                            BrandId = 2,
                             CategoryId = 9,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1208),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9102),
                             Description = "Laptop gaming mạnh mẽ",
                             Name = "TUF Gaming 22KW",
                             Quantity = 2,
@@ -265,8 +275,9 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         new
                         {
                             Id = 6,
+                            BrandId = 1,
                             CategoryId = 4,
-                            CreateDate = new DateTime(2022, 4, 25, 19, 48, 9, 863, DateTimeKind.Local).AddTicks(1210),
+                            CreateDate = new DateTime(2022, 4, 27, 8, 59, 51, 600, DateTimeKind.Local).AddTicks(9104),
                             Description = "Laptop văn phòng mạnh mẽ",
                             Name = "Vostro 7799",
                             Quantity = 2,
@@ -358,7 +369,7 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3686be03-7a0d-4895-b316-7dbba283b45d",
+                            ConcurrencyStamp = "5b0179cb-db15-48f5-a093-3fa18f86b82f",
                             Email = "backendteam@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Hung",
@@ -366,7 +377,7 @@ namespace EcommerceSolution.BackendAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "backendteam@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO2hdo1R12uTOl+S+wcCW1FmoSeh7jSGvvi2f+ERkoHDAmrLivv0SSfegKcMrHhepw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOdUKqJV0A5lKqR9VP4A22Kdq/kNkyEFBFal/OYloE7w1GkI2H3jnNAvXHZjGI5xWg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -376,7 +387,7 @@ namespace EcommerceSolution.BackendAPI.Migrations
                         {
                             Id = new Guid("cdf5c8fb-b7c0-455c-8134-94ef0cf92717"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e68d44e7-ffb1-4b40-8a95-88aba30362e1",
+                            ConcurrencyStamp = "7eb32fc9-36cb-46f9-b264-f274472af201",
                             Email = "backend@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Liem",
@@ -384,7 +395,7 @@ namespace EcommerceSolution.BackendAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "backend@gmail.com",
                             NormalizedUserName = "liemnv",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMmhtvLeFf4LAPw5HB70K/LApkaBajsUxCrUCKuBzrSg0OxPXcD4Al1CGwp7klvunQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPDHOPVPGyYg6D81859A+qmET1+r1bql76bfMvgv4IwOIi+kh5+LKbfW/XUYELWblA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -498,6 +509,12 @@ namespace EcommerceSolution.BackendAPI.Migrations
 
             modelBuilder.Entity("EcommerceSolution.BackendAPI.Data.Entities.Product", b =>
                 {
+                    b.HasOne("EcommerceSolution.BackendAPI.Data.Entities.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("EcommerceSolution.BackendAPI.Data.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")

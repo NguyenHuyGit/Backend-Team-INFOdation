@@ -10,9 +10,12 @@ namespace EcommerceSolution.BackendAPI.ViewModels.Products
     {
        
         public string Name { get; set; }
+        [Required]
         public int Quantity { get; set; }
         public string Description { get; set; }
+        [Required]
         public int CategoryId { get; set; }
+        [Required]
         public int BrandId { get; set; }
 
 
